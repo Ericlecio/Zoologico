@@ -42,6 +42,38 @@ public class AnimalDAOList implements IAnimalDAO {
 		super();
 		this.lista = lista;
 	}
+
+	@Override
+	public void editar(Animal animal) {
+	    for (Animal a : lista) {
+	        if (a.getIdAnimal() == animal.getIdAnimal()) {
+	            a.setNome(animal.getNome());
+	            a.setEspecie(animal.getEspecie());
+	            a.setDataNascimento(animal.getDataNascimento());
+	            return;
+	        }
+	    }
+	    throw new IllegalArgumentException("Animal não encontrado com o ID: " + animal.getIdAnimal());
+	}
+	
+	public Animal consultar(int idAnimal) {
+	    for (Animal animal : lista) {
+	        if (animal.getIdAnimal() == idAnimal) {
+	            return animal;
+	        }
+	    }
+	    return null;
+	}
+	
+	public void remover(int idAnimal) {
+	    lista.removeIf(animal -> animal.getIdAnimal() == idAnimal);
+	}
+
+	
+	@Override
+	public List<Animal> consultarTodos() {
+	    return new ArrayList<>(lista);
+	}
 	
 	// outros métodos de acesso aos dados do animal
 }
