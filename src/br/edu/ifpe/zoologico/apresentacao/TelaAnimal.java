@@ -2,10 +2,9 @@ package br.edu.ifpe.zoologico.apresentacao;
 
 import java.util.Scanner;
 import br.edu.ifpe.zoologico.entidades.Animal;
-import br.edu.ifpe.zoologico.negocio.ExcecaoAnimalJaCadastrado;
+import br.edu.ifpe.zoologico.excecoes.ExcecaoNegocio;
 import br.edu.ifpe.zoologico.negocio.FabricaControlador;
 import br.edu.ifpe.zoologico.negocio.IControladorAnimal;
-
 
 public class TelaAnimal {
 
@@ -26,19 +25,28 @@ public class TelaAnimal {
 			} catch (NumberFormatException ex) {
 				System.out.println("Digite um número válido!");
 			}
-		} while (opcao < 1 || opcao > 5);
 
-		if (opcao == 1) {
-			this.inserir();
-		} else if (opcao == 2) {
-			// implementar edição de animal
-		} else if (opcao == 3) {
-			// implementar remoção de animal
-		} else if (opcao == 4) {
-			// implementar consulta de animal
-		} else {
-			System.out.println("Saindo do sistema...");
-		}
+			switch (opcao) {
+			case 1:
+				this.inserir();
+				break;
+			case 2:
+				// this.editar();
+				break;
+			case 3:
+				//  this.remover();
+				break;
+			case 4:
+				//  this.consultar();
+				break;
+			case 5:
+				System.out.println("Saindo do sistema...");
+				break;
+			default:
+				System.out.println("Opção inválida! Digite novamente.");
+				break;
+			}
+		} while (opcao != 5);
 	}
 
 	private void inserir() {
@@ -51,16 +59,33 @@ public class TelaAnimal {
 		IControladorAnimal controlador = FabricaControlador.getControladorAnimal();
 		try {
 			controlador.inserir(animal);
-		}catch (ExcecaoAnimalJaCadastrado excecao) {
+		} catch (ExcecaoNegocio excecao) {
 			System.out.println("Animal já cadastrado: " + excecao.getMessage());
 		}
+	}
+
+
+	private int lerInteiro(String mensagem) {
+		int entrada = 0;
+		boolean valido = false;
+
+		while (!valido) {
+			System.out.println("Digite " + mensagem + ": ");
+			try {
+				entrada = Integer.parseInt(scanner.nextLine());
+				valido = true;
+			} catch (NumberFormatException ex) {
+				System.out.println("Digite um número válido!");
+			}
+		} 
+		return entrada;
 	}
 
 	private String lerString(String nomeAtributo) {
 		String entrada = "";
 
 		while (entrada.trim().isEmpty()) {
-			System.out.println("Digite o " + nomeAtributo + " do animal: ");
+			System.out.println("Digite o " + nomeAtributo + ": ");
 			entrada = scanner.nextLine();
 		}
 
