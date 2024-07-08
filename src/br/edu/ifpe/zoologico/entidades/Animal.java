@@ -1,7 +1,6 @@
 package br.edu.ifpe.zoologico.entidades;
 
-public class Animal {
-	private int idAnimal;
+public class Animal extends EntidadeBase {
 	private String nome;
 	private String especie;
 	private String dataNascimento;
@@ -9,22 +8,14 @@ public class Animal {
 	public Animal() {}
 
 	// Construtor
-	public Animal(int idAnimal, String nome, String especie, String dataNascimento) {
-		this.idAnimal = idAnimal;
+	public Animal( String nome, String especie, String dataNascimento) {
 		this.nome = nome;
 		this.especie = especie;
 		this.dataNascimento = dataNascimento;
 	}
 
 	// Getters e Setters
-	public int getIdAnimal() {
-		return idAnimal;
-	}
-
-	public void setIdAnimal(int idAnimal) {
-		this.idAnimal = idAnimal;
-	}
-
+	
 	public String getNome() {
 		return nome;
 	}
@@ -50,13 +41,11 @@ public class Animal {
 	}
 	
 	public static class AnimalBuilder {
-		private Integer idAnimal;
 		private String nome;
 		private String especie;
 		private String dataNascimento;
 		
 		public AnimalBuilder idAnimal (Integer idAnimal) {
-			this.idAnimal = idAnimal;
 			return this;
 		}
 		
@@ -76,7 +65,7 @@ public class Animal {
 		}
 		
 		public Animal criar() {
-			return new Animal(this.idAnimal, this.nome, this.especie, this.dataNascimento);
+			return new Animal(this.nome, this.especie, this.dataNascimento);
 		}
 		
 	}
