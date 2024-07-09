@@ -1,15 +1,22 @@
 package br.edu.ifpe.zoologico.entidades;
 
 public class EntidadeBase {
-	
-	private int id;
+    private static Integer proximoId = 1;
+    private Integer id;
 
-	public int getId() {
-		return id;
-	}
+    public EntidadeBase() {
+        this.id = proximoId++;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public EntidadeBase(Integer id) {
+        this.id = id;
+    }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 }

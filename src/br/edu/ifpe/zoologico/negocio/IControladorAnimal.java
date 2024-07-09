@@ -8,7 +8,7 @@ import br.edu.ifpe.zoologico.excecoes.ExcecaoNegocio;
 public interface IControladorAnimal {
 	void inserir(Animal animal) throws ExcecaoNegocio;
 	void editar(Animal animal) throws ExcecaoNegocio;
-	Animal consultar(int idAnimal) throws ExcecaoNegocio;
-	void remover(int idAnimal) throws ExcecaoNegocio;
+	Animal consultar(Integer id) throws ExcecaoNegocio;
+	void remover(Integer id) throws ExcecaoNegocio;
 	List<Animal> consultarTodos() throws ExcecaoNegocio;
 }

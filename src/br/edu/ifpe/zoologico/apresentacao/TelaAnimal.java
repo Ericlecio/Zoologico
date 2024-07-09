@@ -9,11 +9,16 @@ import br.edu.ifpe.zoologico.negocio.IControladorAnimal;
 
 public class TelaAnimal {
 
-	Scanner scanner = new Scanner(System.in);
+	private Scanner scanner;
+
+	public TelaAnimal() {
+		this.scanner = new Scanner(System.in);
+	}
 
 	public void exibir() {
 		int opcao = 0;
 		do {
+			System.out.println("-------------------------------------------");
 			System.out.println("CRUD Zoologico!");  
 			System.out.println("Digite 1 para cadastrar um animal;");
 			System.out.println("Digite 2 para editar os dados de um animal;");
@@ -24,119 +29,120 @@ public class TelaAnimal {
 
 			System.out.println("-------------------------------------------");
 
-
 			try {
 				opcao = Integer.parseInt(scanner.nextLine());
 			} catch (NumberFormatException ex) {
 				System.out.println("Digite um número válido!");
+				continue;
 			}
 
 			switch (opcao) {
 			case 1:
-				this.inserir();
+				cadastrarAnimal();
 				break;
 			case 2:
-				this.editar();
+				editarAnimal();
 				break;
 			case 3:
-				this.remover();
+				removerAnimal();
 				break;
 			case 4:
-				this.consultar();
+				consultarAnimal();
 				break;
 			case 5:
-				this.consultarTodos();
+				consultarTodosAnimais();
 				break;
 			case 6:
 				System.out.println("Saindo do sistema...");
 				break;
 			default:
-				System.out.println("Opção inválida! Digite os numeros entre 1 e 6.");
+				System.out.println("Opção inválida! Digite os números entre 1 e 6.");
 				break;
 			}
 		} while (opcao != 6);
 	}
 
-
-	private void inserir() {
-		int idAnimal = lerInteiro("idAnimal");
-
+	private void cadastrarAnimal() {
+		System.out.println("Cadastro de Animal");
 		IControladorAnimal controlador = FabricaControlador.getControladorAnimal();
 
+		String nome = lerString("nome");
+		String especie = lerString("espécie");
+		String dataNascimento = lerString("data de nascimento");
+
+		Animal.AnimalBuilder builder = new Animal.AnimalBuilder()
+				.nome(nome)
+				.especie(especie)
+				.dataNascimento(dataNascimento);
+
+		Animal animal = builder.criar();
+
 		try {
-			Animal animalExistente = controlador.consultar(idAnimal);
-			if (animalExistente != null) {
-				System.out.println("Já existe um animal cadastrado com este ID!");
-				return;
-			}
-
-			Animal animal = new Animal();
-			animal.setIdAnimal(idAnimal);
-			animal.setNome(this.lerString("nome"));
-			animal.setEspecie(this.lerString("espécie"));
-			animal.setDataNascimento(this.lerString("data de nascimento"));
-			System.out.println("---------------------------------------------");
-
 			controlador.inserir(animal);
-			System.out.println("Animal cadastrado com sucesso!");
+			System.out.println("Animal cadastrado com sucesso! ID: " + animal.getId());
 		} catch (ExcecaoNegocio excecao) {
 			System.out.println("Erro ao cadastrar animal: " + excecao.getMessage());
 		}
 	}
 
-	private void editar() {
-		int idAnimal = lerInteiro("idAnimal");
-
+	private void editarAnimal() {
+		System.out.println("Edição de Animal");
 		IControladorAnimal controlador = FabricaControlador.getControladorAnimal();
-		String novoNome = lerString("novo nome");
-		String novaEspecie = lerString("nova especie");
-		String novadata = lerString("novo data");
 
-		Animal Animal = new Animal(idAnimal, novaEspecie, novadata, novoNome);
+		int id = lerInteiro("ID do animal");
+
+		String novoNome = lerString("novo nome");
+		String novaEspecie = lerString("nova espécie");
+		String novaDataNascimento = lerString("nova data de nascimento");
+
+		Animal animal = new Animal(novoNome, novaEspecie, novaDataNascimento);
+
 		try {
-			controlador.editar(Animal);
+			controlador.editar(animal);
 			System.out.println("Animal editado com sucesso!");
 		} catch (ExcecaoNegocio e) {
-			System.out.println( e.getMessage());
+			System.out.println("Erro ao editar animal: " + e.getMessage());
 		}
 	}
 
-	private void consultar() {
-		int idAnimal = lerInteiro("idAnimal");
-
+	private void removerAnimal() {
+		System.out.println("Remoção de Animal");
 		IControladorAnimal controlador = FabricaControlador.getControladorAnimal();
 
+		int id = lerInteiro("ID do animal");
+
 		try {
-			Animal animal = controlador.consultar(idAnimal);
+			controlador.remover(id);
+			System.out.println("Animal removido com sucesso!");
+		} catch (ExcecaoNegocio e) {
+			System.out.println("Erro ao remover animal: " + e.getMessage());
+		}
+	}
+
+	private void consultarAnimal() {
+		System.out.println("Consulta de Animal");
+		IControladorAnimal controlador = FabricaControlador.getControladorAnimal();
+
+		int id = lerInteiro("ID do animal");
+
+		try {
+			Animal animal = controlador.consultar(id);
 			if (animal != null) {
 				System.out.println("Animal encontrado:");
-				System.out.println("ID: " + animal.getIdAnimal());
+				System.out.println("ID: " + animal.getId());
 				System.out.println("Nome: " + animal.getNome());
 				System.out.println("Espécie: " + animal.getEspecie());
 				System.out.println("Data de Nascimento: " + animal.getDataNascimento());
-				System.out.println("---------------------------------------------");
 			} else {
 				System.out.println("Animal não encontrado.");
 			}
 		} catch (ExcecaoNegocio e) {
-			System.out.println(e.getMessage());
+			System.out.println("Erro ao consultar animal: " + e.getMessage());
 		}
 	}
 
-	private void remover() {
-		int idAnimal = lerInteiro("idAnimal");
-
-		IControladorAnimal controlador = FabricaControlador.getControladorAnimal();
-
-		try {
-			controlador.remover(idAnimal);
-			System.out.println("Animal removido!");
-		} catch (ExcecaoNegocio e) {
-			System.out.println(e.getMessage());
-		}
-	}
-
-	private void consultarTodos() {
+	private void consultarTodosAnimais() {
+		System.out.println("Lista de Todos os Animais");
 		IControladorAnimal controlador = FabricaControlador.getControladorAnimal();
 
 		try {
@@ -145,7 +151,7 @@ public class TelaAnimal {
 				System.out.println("Lista de animais:");
 				for (Animal animal : animais) {
 					System.out.println("---------------------------------------------");
-					System.out.println("ID: " + animal.getIdAnimal());
+					System.out.println("ID: " + animal.getId());
 					System.out.println("Nome: " + animal.getNome());
 					System.out.println("Espécie: " + animal.getEspecie());
 					System.out.println("Data de Nascimento: " + animal.getDataNascimento());
@@ -155,26 +161,26 @@ public class TelaAnimal {
 				System.out.println("Não há animais cadastrados.");
 			}
 		} catch (ExcecaoNegocio e) {
-			System.out.println(e.getMessage());
+			System.out.println("Erro ao consultar animais: " + e.getMessage());
 		}
 	}
-
 
 	private int lerInteiro(String mensagem) {
 		int entrada = 0;
 		boolean valido = false;
 
 		while (!valido) {
-			System.out.println("Digite " + mensagem + ": ");
+			System.out.println("Digite o " + mensagem + ": ");
 			String input = scanner.nextLine();
 
-			if (input.matches("\\d+")) {
+			try {
 				entrada = Integer.parseInt(input);
 				valido = true;
-			} else {
+			} catch (NumberFormatException ex) {
 				System.out.println("Digite apenas números inteiros!");
 			}
 		}
+
 		return entrada;
 	}
 

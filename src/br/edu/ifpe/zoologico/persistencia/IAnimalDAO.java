@@ -9,9 +9,9 @@ public interface IAnimalDAO {
 
 	void editar(Animal animal);
 
-	Animal consultar(int idAnimal);
+	Animal consultar(Integer id);
 
-	void remover(int idAnimal);
+	void remover(Integer id);
 
 	List<Animal> consultarTodos();
 }
