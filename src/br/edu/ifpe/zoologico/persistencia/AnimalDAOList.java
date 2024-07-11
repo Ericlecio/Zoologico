@@ -3,6 +3,7 @@ package br.edu.ifpe.zoologico.persistencia;
 import java.util.ArrayList;
 import java.util.List;
 import br.edu.ifpe.zoologico.entidades.Animal;
+import br.edu.ifpe.zoologico.excecoes.ExcecaoNegocio;
 
 public class AnimalDAOList implements IAnimalDAO {
 
@@ -26,14 +27,19 @@ public class AnimalDAOList implements IAnimalDAO {
 	}
 
 	@Override
-	public void editar(Animal animal) {
+	public void editar(Animal animal) throws ExcecaoNegocio {
+		boolean encontrado = false;
+
 		for (int id = 0; id < lista.size(); id++) {
 			if (lista.get(id).getId() == animal.getId()) {
 				lista.set(id, animal);
-				return;
+				encontrado = true;
+				break;
 			}
 		}
-		throw new IllegalArgumentException("Animal não encontrado com o ID: " + animal.getId());
+		if (!encontrado) {
+			throw new ExcecaoNegocio("Animal não encontrado com o ID: " + animal.getId());
+		}
 	}
 
 	@Override

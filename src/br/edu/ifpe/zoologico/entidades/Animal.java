@@ -12,7 +12,6 @@ public class Animal extends EntidadeBase {
 		this.dataNascimento = dataNascimento;
 	}
 
-
 	public String getNome() {
 		return nome;
 	}
@@ -67,7 +66,4 @@ public class Animal extends EntidadeBase {
 			return new Animal(nome, especie, dataNascimento);
 		}
 	}
-
-
-
 }
