@@ -85,38 +85,40 @@ public class TelaAnimal {
 	}
 
 	private void editarAnimal() {
-		System.out.println("Edição de Animal");
-		IControladorAnimal controlador = FabricaControlador.getControladorAnimal();
+	    System.out.println("Edição de Animal");
+	    IControladorAnimal controlador = FabricaControlador.getControladorAnimal();
 
-		int id = lerInteiro("ID do animal");
+	    int id = lerInteiro("ID do animal");
 
-		Animal animalExistente = null;
-		try {
-			animalExistente = controlador.consultar(id);
-		} catch (ExcecaoNegocio e) {
-			System.out.println("Erro ao consultar animal: " + e.getMessage());
-			return;
-		}
+	    Animal animalExistente = null;
+	    try {
+	        animalExistente = controlador.consultar(id);
+	    } catch (ExcecaoNegocio e) {
+	        System.out.println("Erro ao consultar animal: " + e.getMessage());
+	        return;
+	    }
 
-		if (animalExistente == null) {
-			System.out.println("Animal não encontrado com o ID: " + id);
-			return;
-		}
+	    if (animalExistente == null) {
+	        System.out.println("Animal não encontrado com o ID: " + id);
+	        return;
+	    }
 
-		String novoNome = lerString("novo nome");
-		String novaEspecie = lerString("nova espécie");
-		String novaDataNascimento = lerString("nova data de nascimento");
+	    String novoNome = lerString("novo nome");
+	    String novaEspecie = lerString("nova espécie");
+	    String novaDataNascimento = lerString("nova data de nascimento");
 
-		Animal animal = new Animal(novoNome, novaEspecie, novaDataNascimento);
-		animal.setId(id); 
+	    animalExistente.setNome(novoNome);
+	    animalExistente.setEspecie(novaEspecie);
+	    animalExistente.setDataNascimento(novaDataNascimento);
 
-		try {
-			controlador.editar(animal);
-			System.out.println("Animal editado com sucesso!");
-		} catch (ExcecaoNegocio e) {
-			System.out.println("Erro ao editar animal com o id " + animal.getId());
-		}
+	    try {
+	        controlador.editar(animalExistente);
+	        System.out.println("Animal editado com sucesso!");
+	    } catch (ExcecaoNegocio e) {
+	        System.out.println("Erro ao editar animal com o id " + animalExistente.getId());
+	    }
 	}
+
 
 	private void removerAnimal() {
 		System.out.println("Remoção de Animal");

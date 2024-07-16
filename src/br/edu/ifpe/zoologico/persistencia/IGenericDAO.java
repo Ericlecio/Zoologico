@@ -4,15 +4,15 @@ import java.util.List;
 
 import br.edu.ifpe.zoologico.excecoes.ExcecaoNegocio;
 
-public interface IGenericDAO<T>  {
+public interface IGenericDAO<T> {
 
-	public void inserir(T objeto);
+    void inserir(T objeto);
 
-	public void editar(T objeto) throws ExcecaoNegocio;
+    void editar(T objeto) throws ExcecaoNegocio;
 
-	public boolean remover(T objeto);
+    boolean remover(Integer id) throws ExcecaoNegocio;
 
-	public T consultar(Integer id); 
+    T consultar(Integer id);
 
-	public List<T> listar();
+    List<T> listar();
 }
