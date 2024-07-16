@@ -4,7 +4,7 @@ import java.util.List;
 import br.edu.ifpe.zoologico.entidades.Animal;
 import br.edu.ifpe.zoologico.excecoes.ExcecaoNegocio;
 import br.edu.ifpe.zoologico.persistencia.FabricaDAO;
-import br.edu.ifpe.zoologico.persistencia.IAnimalDAO;
+import br.edu.ifpe.zoologico.persistencia.GenericDao;
 
 public class ControladorAnimal implements IControladorAnimal {
 
@@ -14,7 +14,7 @@ public class ControladorAnimal implements IControladorAnimal {
 			throw new ExcecaoNegocio("Animal inválido!");
 		}
 
-		IAnimalDAO dao = FabricaDAO.getAnimalDAO();
+		GenericDao<Object> dao = FabricaDAO.getDAO();
 		dao.inserir(animal);
 	}
 
@@ -24,26 +24,26 @@ public class ControladorAnimal implements IControladorAnimal {
 			throw new ExcecaoNegocio("Animal inválido!");
 		}
 
-		IAnimalDAO dao = FabricaDAO.getAnimalDAO();
+		GenericDao<Object> dao = FabricaDAO.getDAO();
 		dao.editar(animal);
 	}
 
 	@Override
 	public Animal consultar(Integer id) throws ExcecaoNegocio {
-		IAnimalDAO dao = FabricaDAO.getAnimalDAO();
-		return dao.consultar(id);
+		GenericDao<Animal> dao = FabricaDAO.getDAO();
+		return (Animal) dao.consultar(id);
 	}
 
 	@Override
 	public void remover(Integer id) throws ExcecaoNegocio {
-		IAnimalDAO dao = FabricaDAO.getAnimalDAO();
-		dao.remover(id);
+		GenericDao<Animal> dao = FabricaDAO.getDAO();
+		return dao.remover(id);
 	}
 
 	@Override
 	public List<Animal> consultarTodos() throws ExcecaoNegocio {
-		IAnimalDAO dao = FabricaDAO.getAnimalDAO();
-		return dao.consultarTodos();
+		GenericDao<Animal> dao = FabricaDAO.getDAO();
+		return dao.listar();
 	}
 
 	private boolean isValido(Animal animal) {

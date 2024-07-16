@@ -3,6 +3,7 @@ package br.edu.ifpe.zoologico.persistencia;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.edu.ifpe.zoologico.entidades.Animal;
 import br.edu.ifpe.zoologico.excecoes.ExcecaoNegocio;
 
 public class GenericDao <T> implements IGenericDAO <T> {
@@ -14,7 +15,7 @@ public class GenericDao <T> implements IGenericDAO <T> {
 		this.lista = new ArrayList<>();
 	}
 
-	public static synchronized <T> GenericDao<T> getInstancia() {
+	public static <T> GenericDao<T> getInstancia() {
 		if (instancia == null) {
 			instancia = new GenericDao<>();
 		}
@@ -40,6 +41,7 @@ public class GenericDao <T> implements IGenericDAO <T> {
 	public boolean remover(T objeto) {
 		return this.lista.remove(objeto);
 	}
+	
 
 	@Override
 	public List<T> listar() {
@@ -55,5 +57,7 @@ public class GenericDao <T> implements IGenericDAO <T> {
 		}
 		return null;
 	}
+
+	
 
 }
