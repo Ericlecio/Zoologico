@@ -15,5 +15,4 @@ public interface IGenericDAO<T>  {
 	public T consultar(Integer id); 
 
 	public List<T> listar();
-
 }
