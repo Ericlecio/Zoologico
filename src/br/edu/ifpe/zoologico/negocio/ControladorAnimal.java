@@ -29,9 +29,9 @@ public class ControladorAnimal implements IControladorAnimal {
     }
 
     @Override
-    public Animal consultar(Integer id) throws ExcecaoNegocio {
+    public Animal consultarPorId(Integer id) throws ExcecaoNegocio {
         GenericDao<Animal> dao = FabricaDAO.getDAO();
-        Animal animal = dao.consultar(id);
+        Animal animal = dao.consultarPorId(id);
         if (animal == null) {
             throw new ExcecaoNegocio("Animal não encontrado!");
         }
@@ -49,7 +49,7 @@ public class ControladorAnimal implements IControladorAnimal {
     @Override
     public List<Animal> consultarTodos() throws ExcecaoNegocio {
         GenericDao<Animal> dao = FabricaDAO.getDAO();
-        return dao.listar();
+        return dao.listarTodos();
     }
 
     private boolean isValido(Animal animal) {

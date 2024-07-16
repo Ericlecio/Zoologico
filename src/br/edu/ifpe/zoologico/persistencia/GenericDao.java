@@ -39,7 +39,7 @@ public class GenericDao<T> implements IGenericDAO<T> {
 
     @Override
     public boolean remover(Integer id) throws ExcecaoNegocio {
-        T objetoARemover = consultar(id);
+        T objetoARemover = consultarPorId(id);
         if (objetoARemover != null) {
             return lista.remove(objetoARemover);
         } else {
@@ -48,22 +48,20 @@ public class GenericDao<T> implements IGenericDAO<T> {
     }
 
     @Override
-    public List<T> listar() {
+    public List<T> listarTodos() {
         return new ArrayList<>(this.lista);
     }
 
     @Override
-    public T consultar(Integer id) {
+    public T consultarPorId(Integer id) {
         for (T objeto : lista) {
             if (objeto instanceof Animal) {
                 Animal animal = (Animal) objeto;
-                if (animal.getId().equals(id)) { // Supondo que getId() retorna o ID do Animal
+                if (animal.getId().equals(id)) {
                     return objeto;
                 }
             }
-            // Outras lógicas de consulta para diferentes tipos de objetos, se aplicável
         }
         return null;
     }
-
 }

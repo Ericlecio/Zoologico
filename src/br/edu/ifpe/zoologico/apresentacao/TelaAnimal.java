@@ -2,6 +2,7 @@ package br.edu.ifpe.zoologico.apresentacao;
 
 import java.util.List;
 import java.util.Scanner;
+import java.time.LocalDate;
 import br.edu.ifpe.zoologico.entidades.Animal;
 import br.edu.ifpe.zoologico.excecoes.ExcecaoNegocio;
 import br.edu.ifpe.zoologico.negocio.FabricaControlador;
@@ -19,11 +20,11 @@ public class TelaAnimal {
 		int opcao = 0;
 		do {
 			System.out.println("-------------------------------------------");
-			System.out.println("CRUD Zoologico!");  
+			System.out.println("Seja Bem Vindo ao Zoologico!");
 			System.out.println("Digite 1 para cadastrar um animal;");
 			System.out.println("Digite 2 para editar os dados de um animal;");
 			System.out.println("Digite 3 para remover um animal;");
-			System.out.println("Digite 4 para consultar um animal;");
+			System.out.println("Digite 4 para consultar um animal especifico;");
 			System.out.println("Digite 5 para consultar todos os animais, ou ");
 			System.out.println("Digite 6 para sair");
 			System.out.println("-------------------------------------------");
@@ -67,7 +68,7 @@ public class TelaAnimal {
 
 		String nome = lerString("nome");
 		String especie = lerString("espécie");
-		String dataNascimento = lerString("data de nascimento");
+		LocalDate dataNascimento = lerDataNascimento();
 
 		Animal.AnimalBuilder builder = new Animal.AnimalBuilder()
 				.nome(nome)
@@ -85,40 +86,39 @@ public class TelaAnimal {
 	}
 
 	private void editarAnimal() {
-	    System.out.println("Edição de Animal");
-	    IControladorAnimal controlador = FabricaControlador.getControladorAnimal();
+		System.out.println("Edição de Animal");
+		IControladorAnimal controlador = FabricaControlador.getControladorAnimal();
 
-	    int id = lerInteiro("ID do animal");
+		int id = lerInteiro("ID do animal");
 
-	    Animal animalExistente = null;
-	    try {
-	        animalExistente = controlador.consultar(id);
-	    } catch (ExcecaoNegocio e) {
-	        System.out.println("Erro ao consultar animal: " + e.getMessage());
-	        return;
-	    }
+		Animal animalExistente = null;
+		try {
+			animalExistente = controlador.consultarPorId(id);
+		} catch (ExcecaoNegocio e) {
+			System.out.println("Erro ao consultar animal: " + e.getMessage());
+			return;
+		}
 
-	    if (animalExistente == null) {
-	        System.out.println("Animal não encontrado com o ID: " + id);
-	        return;
-	    }
+		if (animalExistente == null) {
+			System.out.println("Animal não encontrado com o ID: " + id);
+			return;
+		}
 
-	    String novoNome = lerString("novo nome");
-	    String novaEspecie = lerString("nova espécie");
-	    String novaDataNascimento = lerString("nova data de nascimento");
+		String novoNome = lerString("novo nome");
+		String novaEspecie = lerString("nova espécie");
+		LocalDate novaDataNascimento = lerDataNascimento();
 
-	    animalExistente.setNome(novoNome);
-	    animalExistente.setEspecie(novaEspecie);
-	    animalExistente.setDataNascimento(novaDataNascimento);
+		animalExistente.setNome(novoNome);
+		animalExistente.setEspecie(novaEspecie);
+		animalExistente.setDataNascimento(novaDataNascimento);
 
-	    try {
-	        controlador.editar(animalExistente);
-	        System.out.println("Animal editado com sucesso!");
-	    } catch (ExcecaoNegocio e) {
-	        System.out.println("Erro ao editar animal com o id " + animalExistente.getId());
-	    }
+		try {
+			controlador.editar(animalExistente);
+			System.out.println("Animal editado com sucesso!");
+		} catch (ExcecaoNegocio e) {
+			System.out.println("Erro ao editar animal com o id " + animalExistente.getId());
+		}
 	}
-
 
 	private void removerAnimal() {
 		System.out.println("Remoção de Animal");
@@ -141,7 +141,7 @@ public class TelaAnimal {
 		int id = lerInteiro("ID do animal");
 
 		try {
-			Animal animal = controlador.consultar(id);
+			Animal animal = controlador.consultarPorId(id);
 			if (animal != null) {
 				System.out.println("Animal encontrado:");
 				System.out.println("ID: " + animal.getId());
@@ -206,5 +206,23 @@ public class TelaAnimal {
 			entrada = scanner.nextLine();
 		}
 		return entrada;
+	}
+
+	private LocalDate lerDataNascimento() {
+		LocalDate data = null;
+		boolean valido = false;
+
+		while (!valido) {
+			System.out.println("Digite a data de nascimento (no formato Ano-Mes-Dia): ");
+			String input = scanner.nextLine();
+
+			try {
+				data = LocalDate.parse(input);
+				valido = true;
+			} catch (Exception ex) {
+				System.out.println("Formato de data inválido! Use o formato Ano-Mes-Dia.");
+			}
+		}
+		return data;
 	}
 }
