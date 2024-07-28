@@ -7,6 +7,7 @@ public class Animal extends EntidadeBase {
     private String especie;
     private LocalDate dataNascimento;
     private static final AdapterDataNascimento adapterDataNascimento = new DataNascimento();
+    private Comportamento comportamento;
 
     public Animal(String nome, String especie, LocalDate dataNascimento) {
         super();
@@ -15,7 +16,20 @@ public class Animal extends EntidadeBase {
         this.dataNascimento = dataNascimento;
     }
 
-    public String getNome() {
+    public Comportamento getComportamento() {
+		return comportamento;
+	}
+	public void setComportamento(Comportamento comportamento) {
+		this.comportamento = comportamento;
+	}
+	
+	public static AdapterDataNascimento getAdapterdatanascimento() {
+		return adapterDataNascimento;
+	}
+
+
+
+	public String getNome() {
         return nome;
     }
 

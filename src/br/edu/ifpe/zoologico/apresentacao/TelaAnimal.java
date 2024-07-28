@@ -3,8 +3,7 @@ package br.edu.ifpe.zoologico.apresentacao;
 import java.util.List;
 import java.util.Scanner;
 import org.joda.time.LocalDate;
-import br.edu.ifpe.zoologico.entidades.Animal;
-import br.edu.ifpe.zoologico.entidades.DataNascimento; 
+import br.edu.ifpe.zoologico.entidades.*;
 import br.edu.ifpe.zoologico.excecoes.ExcecaoNegocio;
 import br.edu.ifpe.zoologico.negocio.FabricaControlador;
 import br.edu.ifpe.zoologico.negocio.IControladorAnimal;
@@ -80,6 +79,10 @@ public class TelaAnimal {
 
         Animal animal = builder.criar();
 
+        Comportamento comportamento = new AnimalConcreto(animal);
+        comportamento = InserirComportamento(comportamento);
+        animal.setComportamento(comportamento);
+
         try {
             controlador.inserir(animal);
             System.out.println("Animal cadastrado com sucesso! ID: " + animal.getId());
@@ -114,6 +117,10 @@ public class TelaAnimal {
         animalExistente.setNome(novoNome);
         animalExistente.setEspecie(novaEspecie);
         animalExistente.setDataNascimento(novaDataNascimento);
+
+        Comportamento comportamento = new AnimalConcreto(animalExistente);
+        comportamento = InserirComportamento(comportamento);
+        animalExistente.setComportamento(comportamento);
 
         try {
             controlador.editar(animalExistente);
@@ -152,6 +159,11 @@ public class TelaAnimal {
                 System.out.println("Espécie: " + animal.getEspecie());
                 System.out.println("Data de Nascimento (Extenso): " + dataNascimentoAdapter.formatarExtenso(animal.getDataNascimento()));
                 System.out.println("Data de Nascimento (Sistema Português): " + dataNascimentoAdapter.formatarSistemaPortugues(animal.getDataNascimento()));
+                if (animal.getComportamento() != null) {
+                    animal.getComportamento().Acao();
+                } else {
+                    System.out.println("Este animal não possui ações especiais.");
+                }
             } else {
                 System.out.println("Animal não encontrado.");
             }
@@ -175,6 +187,11 @@ public class TelaAnimal {
                     System.out.println("Espécie: " + animal.getEspecie());
                     System.out.println("Data de Nascimento (Extenso): " + dataNascimentoAdapter.formatarExtenso(animal.getDataNascimento()));
                     System.out.println("Data de Nascimento (Sistema Português): " + dataNascimentoAdapter.formatarSistemaPortugues(animal.getDataNascimento()));
+                    if (animal.getComportamento() != null) {
+                        animal.getComportamento().Acao();
+                    } else {
+                        System.out.println("Este animal não possui ações especiais.");
+                    }
                 }
                 System.out.println("---------------------------------------------");
             } else {
@@ -229,5 +246,23 @@ public class TelaAnimal {
             }
         }
         return data;
+    }
+
+    private Comportamento InserirComportamento(Comportamento comportamento) {
+        System.out.println("Deseja adicionar algum comportamento especial ao animal?");
+        System.out.println("1 - Voar");
+        int opcao = lerInteiro("opção");
+
+        switch (opcao) {
+            case 1:
+                comportamento = new Voar(comportamento);
+                break;
+            case 0:
+            default:
+                System.out.println("Nenhum comportamento adicionado.");
+                break;
+        }
+
+        return comportamento;
     }
 }
