@@ -2,9 +2,9 @@ package br.edu.ifpe.zoologico.apresentacao;
 
 import java.util.List;
 import java.util.Scanner;
-import org.joda.time.LocalDate; // Import Joda-Time LocalDate
+import org.joda.time.LocalDate;
 import br.edu.ifpe.zoologico.entidades.Animal;
-import br.edu.ifpe.zoologico.entidades.DataNascimento; // Importa a classe DataNascimento
+import br.edu.ifpe.zoologico.entidades.DataNascimento; 
 import br.edu.ifpe.zoologico.excecoes.ExcecaoNegocio;
 import br.edu.ifpe.zoologico.negocio.FabricaControlador;
 import br.edu.ifpe.zoologico.negocio.IControladorAnimal;
@@ -12,11 +12,11 @@ import br.edu.ifpe.zoologico.negocio.IControladorAnimal;
 public class TelaAnimal {
 
     private Scanner scanner;
-    private DataNascimento dataNascimentoAdapter; // Instância do adaptador para formatação
+    private DataNascimento dataNascimentoAdapter;
 
     public TelaAnimal() {
         this.scanner = new Scanner(System.in);
-        this.dataNascimentoAdapter = new DataNascimento(); // Inicializa o adaptador
+        this.dataNascimentoAdapter = new DataNascimento();
     }
 
     public void exibir() {
@@ -222,7 +222,7 @@ public class TelaAnimal {
             String input = scanner.nextLine();
 
             try {
-                data = LocalDate.parse(input); // Analisar data no formato padrão ISO
+                data = LocalDate.parse(input);
                 valido = true;
             } catch (Exception ex) {
                 System.out.println("Formato de data inválido! Use o formato Ano-Mes-Dia.");

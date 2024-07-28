@@ -5,7 +5,7 @@ import org.joda.time.LocalDate;
 public class Animal extends EntidadeBase {
     private String nome;
     private String especie;
-    private LocalDate dataNascimento; // Alterado para Joda-Time LocalDate
+    private LocalDate dataNascimento;
     private static final AdapterDataNascimento adapterDataNascimento = new DataNascimento();
 
     public Animal(String nome, String especie, LocalDate dataNascimento) {
