@@ -1,4 +1,4 @@
-package br.edu.ifpe.zoologico.entidades;
+package br.edu.ifpe.zoologico.util;
 
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;

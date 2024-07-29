@@ -7,6 +7,8 @@ import br.edu.ifpe.zoologico.entidades.*;
 import br.edu.ifpe.zoologico.excecoes.ExcecaoNegocio;
 import br.edu.ifpe.zoologico.negocio.FabricaControlador;
 import br.edu.ifpe.zoologico.negocio.IControladorAnimal;
+import br.edu.ifpe.zoologico.util.AdapterDataNascimento;
+import br.edu.ifpe.zoologico.util.DataNascimento;
 
 public class TelaAnimal {
 
@@ -80,7 +82,7 @@ public class TelaAnimal {
         Animal animal = builder.criar();
 
         Comportamento comportamento = new AnimalConcreto(animal);
-        comportamento = InserirComportamento(comportamento);
+        comportamento = inserirComportamentos(comportamento);
         animal.setComportamento(comportamento);
 
         try {
@@ -119,7 +121,7 @@ public class TelaAnimal {
         animalExistente.setDataNascimento(novaDataNascimento);
 
         Comportamento comportamento = new AnimalConcreto(animalExistente);
-        comportamento = InserirComportamento(comportamento);
+        comportamento = inserirComportamentos(comportamento);
         animalExistente.setComportamento(comportamento);
 
         try {
@@ -249,33 +251,38 @@ public class TelaAnimal {
                 return data;
             }
 
-            private Comportamento InserirComportamento(Comportamento comportamento) {
-                System.out.println("Deseja adicionar algum comportamento especial ao animal?");
-                System.out.println("1 - Voar");
-                System.out.println("2 - Nadar");
-                System.out.println("3 - Rastejar");
-                System.out.println("4 - Correr");
-                int opcao = lerInteiro("opção");
+            private Comportamento inserirComportamentos(Comportamento comportamento) {
+                boolean adicionarMais = true;
+                while (adicionarMais) {
+                    System.out.println("Deseja adicionar algum comportamento especial ao animal?");
+                    System.out.println("1 - Voar");
+                    System.out.println("2 - Nadar");
+                    System.out.println("3 - Rastejar");
+                    System.out.println("4 - Correr");
+                    System.out.println("0 - Parar de adicionar comportamentos");
+                    int opcao = lerInteiro("opção");
 
-                switch (opcao) {
-                    case 1:
-                        comportamento = new Voar(comportamento);
-                        break;
-                    case 2:
-                        comportamento = new Nadar(comportamento);
-                        break;
-                    case 3:
-                        comportamento = new Rastejar(comportamento);
-                        break;
-                    case 4:
-                        comportamento = new Correr(comportamento);
-                        break;
-                    case 0:
-                    default:
-                        System.out.println("Nenhum comportamento adicionado.");
-                        break;
+                    switch (opcao) {
+                        case 1:
+                            comportamento = new ComportamentoVoar(comportamento);
+                            break;
+                        case 2:
+                            comportamento = new ComportamentoNadar(comportamento);
+                            break;
+                        case 3:
+                            comportamento = new ComportamentoRastejar(comportamento);
+                            break;
+                        case 4:
+                            comportamento = new ComportamentoCorrer(comportamento);
+                            break;
+                        case 0:
+                            adicionarMais = false;
+                            break;
+                        default:
+                            System.out.println("Opção inválida. Tente novamente.");
+                            break;
+                    }
                 }
-
                 return comportamento;
             }
         }

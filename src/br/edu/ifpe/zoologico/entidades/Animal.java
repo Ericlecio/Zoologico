@@ -1,5 +1,8 @@
 package br.edu.ifpe.zoologico.entidades;
 
+import br.edu.ifpe.zoologico.util.AdapterDataNascimento;
+import br.edu.ifpe.zoologico.util.DataNascimento;
+
 public class Animal extends EntidadeBase {
     private String nome;
     private String especie;

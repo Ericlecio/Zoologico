@@ -1,4 +1,4 @@
-package br.edu.ifpe.zoologico.entidades;
+package br.edu.ifpe.zoologico.util;
 
 public interface AdapterDataNascimento {
     String formatarExtenso(String dataNascimento);
