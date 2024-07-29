@@ -9,12 +9,20 @@ public class DataNascimento implements AdapterDataNascimento {
     private static final DateTimeFormatter FORMATTER_SISTEMA_PORTUGUES = DateTimeFormat.forPattern("dd-MMMM-yyyy");
 
     @Override
-    public String formatarExtenso(LocalDate dataNascimento) {
-        return dataNascimento.toString(FORMATTER_PT_BR);
+    public String formatarExtenso(String dataNascimento) {
+        LocalDate localDate = LocalDate.parse(dataNascimento);
+        return localDate.toString(FORMATTER_PT_BR);
     }
 
     @Override
-    public String formatarSistemaPortugues(LocalDate dataNascimento) {
-        return dataNascimento.toString(FORMATTER_SISTEMA_PORTUGUES);
+    public String formatarSistemaPortugues(String dataNascimento) {
+        LocalDate localDate = LocalDate.parse(dataNascimento);
+        return localDate.toString(FORMATTER_SISTEMA_PORTUGUES);
+    }
+
+    @Override
+    public String parse(String dataNascimento) {
+        LocalDate localDate = LocalDate.parse(dataNascimento);
+        return localDate.toString();
     }
 }

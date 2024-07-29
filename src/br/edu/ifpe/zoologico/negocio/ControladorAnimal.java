@@ -53,7 +53,6 @@ public class ControladorAnimal implements IControladorAnimal {
     }
 
     private boolean isValido(Animal animal) {
-        // Implementar validação adequada
         return true;
     }
 }

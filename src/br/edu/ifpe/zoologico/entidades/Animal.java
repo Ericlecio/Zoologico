@@ -1,15 +1,13 @@
 package br.edu.ifpe.zoologico.entidades;
 
-import org.joda.time.LocalDate;
-
 public class Animal extends EntidadeBase {
     private String nome;
     private String especie;
-    private LocalDate dataNascimento;
+    private String dataNascimento;
     private static final AdapterDataNascimento adapterDataNascimento = new DataNascimento();
     private Comportamento comportamento;
 
-    public Animal(String nome, String especie, LocalDate dataNascimento) {
+    public Animal(String nome, String especie, String dataNascimento) {
         super();
         this.nome = nome;
         this.especie = especie;
@@ -17,19 +15,18 @@ public class Animal extends EntidadeBase {
     }
 
     public Comportamento getComportamento() {
-		return comportamento;
-	}
-	public void setComportamento(Comportamento comportamento) {
-		this.comportamento = comportamento;
-	}
-	
-	public static AdapterDataNascimento getAdapterdatanascimento() {
-		return adapterDataNascimento;
-	}
+        return comportamento;
+    }
 
+    public void setComportamento(Comportamento comportamento) {
+        this.comportamento = comportamento;
+    }
 
+    public static AdapterDataNascimento getAdapterDataNascimento() {
+        return adapterDataNascimento;
+    }
 
-	public String getNome() {
+    public String getNome() {
         return nome;
     }
 
@@ -45,11 +42,11 @@ public class Animal extends EntidadeBase {
         this.especie = especie;
     }
 
-    public LocalDate getDataNascimento() {
+    public String getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(LocalDate dataNascimento) {
+    public void setDataNascimento(String dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 
@@ -65,7 +62,7 @@ public class Animal extends EntidadeBase {
         private Integer id;
         private String nome;
         private String especie;
-        private LocalDate dataNascimento;
+        private String dataNascimento;
 
         public AnimalBuilder id(Integer id) {
             this.id = id;
@@ -82,7 +79,7 @@ public class Animal extends EntidadeBase {
             return this;
         }
 
-        public AnimalBuilder dataNascimento(LocalDate dataNascimento) {
+        public AnimalBuilder dataNascimento(String dataNascimento) {
             this.dataNascimento = dataNascimento;
             return this;
         }
