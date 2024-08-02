@@ -1,18 +1,19 @@
 package br.edu.ifpe.zoologico.apresentacao;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
-import org.joda.time.LocalDate;
-import br.edu.ifpe.zoologico.entidades.Animal;
-import br.edu.ifpe.zoologico.entidades.DataNascimento; 
+import br.edu.ifpe.zoologico.entidades.*;
 import br.edu.ifpe.zoologico.excecoes.ExcecaoNegocio;
 import br.edu.ifpe.zoologico.negocio.FabricaControlador;
 import br.edu.ifpe.zoologico.negocio.IControladorAnimal;
+import br.edu.ifpe.zoologico.util.AdapterDataNascimento;
+import br.edu.ifpe.zoologico.util.DataNascimento;
 
 public class TelaAnimal {
 
     private Scanner scanner;
-    private DataNascimento dataNascimentoAdapter;
+    private AdapterDataNascimento dataNascimentoAdapter;
 
     public TelaAnimal() {
         this.scanner = new Scanner(System.in);
@@ -71,7 +72,7 @@ public class TelaAnimal {
 
         String nome = lerString("nome");
         String especie = lerString("espécie");
-        LocalDate dataNascimento = lerDataNascimento();
+        String dataNascimento = lerDataNascimento();
 
         Animal.AnimalBuilder builder = new Animal.AnimalBuilder()
                 .nome(nome)
@@ -79,6 +80,10 @@ public class TelaAnimal {
                 .dataNascimento(dataNascimento);
 
         Animal animal = builder.criar();
+
+        Comportamento comportamento = new AnimalConcreto(animal);
+        comportamento = inserirComportamentos(comportamento);
+        animal.setComportamento(comportamento);
 
         try {
             controlador.inserir(animal);
@@ -109,11 +114,15 @@ public class TelaAnimal {
 
         String novoNome = lerString("novo nome");
         String novaEspecie = lerString("nova espécie");
-        LocalDate novaDataNascimento = lerDataNascimento();
+        String novaDataNascimento = lerDataNascimento();
 
         animalExistente.setNome(novoNome);
         animalExistente.setEspecie(novaEspecie);
         animalExistente.setDataNascimento(novaDataNascimento);
+
+        Comportamento comportamento = new AnimalConcreto(animalExistente);
+        comportamento = inserirComportamentos(comportamento);
+        animalExistente.setComportamento(comportamento);
 
         try {
             controlador.editar(animalExistente);
@@ -152,82 +161,128 @@ public class TelaAnimal {
                 System.out.println("Espécie: " + animal.getEspecie());
                 System.out.println("Data de Nascimento (Extenso): " + dataNascimentoAdapter.formatarExtenso(animal.getDataNascimento()));
                 System.out.println("Data de Nascimento (Sistema Português): " + dataNascimentoAdapter.formatarSistemaPortugues(animal.getDataNascimento()));
-            } else {
-                System.out.println("Animal não encontrado.");
-            }
-        } catch (ExcecaoNegocio e) {
-            System.out.println("Erro ao consultar animal: " + e.getMessage());
-        }
-    }
-
-    private void consultarTodosAnimais() {
-        System.out.println("Lista de Todos os Animais");
-        IControladorAnimal controlador = FabricaControlador.getControladorAnimal();
-
-        try {
-            List<Animal> animais = controlador.consultarTodos();
-            if (!animais.isEmpty()) {
-                System.out.println("Lista de animais:");
-                for (Animal animal : animais) {
-                    System.out.println("---------------------------------------------");
-                    System.out.println("ID: " + animal.getId());
-                    System.out.println("Nome: " + animal.getNome());
-                    System.out.println("Espécie: " + animal.getEspecie());
-                    System.out.println("Data de Nascimento (Extenso): " + dataNascimentoAdapter.formatarExtenso(animal.getDataNascimento()));
-                    System.out.println("Data de Nascimento (Sistema Português): " + dataNascimentoAdapter.formatarSistemaPortugues(animal.getDataNascimento()));
+                        if (animal.getComportamento() != null) {
+                            animal.getComportamento().Acao();
+                        } else {
+                            System.out.println("Este animal não possui ações especiais.");
+                        }
+                    } else {
+                        System.out.println("Animal não encontrado.");
+                    }
+                } catch (ExcecaoNegocio e) {
+                    System.out.println("Erro ao consultar animal: " + e.getMessage());
                 }
-                System.out.println("---------------------------------------------");
-            } else {
-                System.out.println("Não há animais cadastrados.");
             }
-        } catch (ExcecaoNegocio e) {
-            System.out.println("Erro ao consultar animais: " + e.getMessage());
-        }
-    }
 
-    private int lerInteiro(String mensagem) {
-        int entrada = 0;
-        boolean valido = false;
+            private void consultarTodosAnimais() {
+                System.out.println("Lista de Todos os Animais");
+                IControladorAnimal controlador = FabricaControlador.getControladorAnimal();
 
-        while (!valido) {
-            System.out.println("Digite o " + mensagem + ": ");
-            String input = scanner.nextLine();
+                try {
+                    List<Animal> animais = controlador.consultarTodos();
+                    if (!animais.isEmpty()) {
+                        System.out.println("Lista de animais:");
+                        for (Animal animal : animais) {
+                            System.out.println("---------------------------------------------");
+                            System.out.println("ID: " + animal.getId());
+                            System.out.println("Nome: " + animal.getNome());
+                            System.out.println("Espécie: " + animal.getEspecie());
+                            System.out.println("Data de Nascimento (Extenso): " + dataNascimentoAdapter.formatarExtenso(animal.getDataNascimento()));
+                            System.out.println("Data de Nascimento (Sistema Português): " + dataNascimentoAdapter.formatarSistemaPortugues(animal.getDataNascimento()));
+                            if (animal.getComportamento() != null) {
+                                animal.getComportamento().Acao();
+                            } else {
+                                System.out.println("Este animal não possui ações especiais.");
+                            }
+                        }
+                        System.out.println("---------------------------------------------");
+                    } else {
+                        System.out.println("Não há animais cadastrados.");
+                    }
+                } catch (ExcecaoNegocio e) {
+                    System.out.println("Erro ao consultar animais: " + e.getMessage());
+                }
+            }
 
-            try {
-                entrada = Integer.parseInt(input);
-                valido = true;
-            } catch (NumberFormatException ex) {
-                System.out.println("Digite apenas números inteiros!");
+            private int lerInteiro(String mensagem) {
+                int entrada = 0;
+                boolean valido = false;
+
+                while (!valido) {
+                    System.out.println("Digite o " + mensagem + ": ");
+                    String input = scanner.nextLine();
+
+                    try {
+                        entrada = Integer.parseInt(input);
+                        valido = true;
+                    } catch (NumberFormatException ex) {
+                        System.out.println("Digite apenas números inteiros!");
+                    }
+                }
+                return entrada;
+            }
+
+            private String lerString(String nomeAtributo) {
+                String entrada = "";
+
+                while (entrada.trim().isEmpty()) {
+                    System.out.println("Digite o " + nomeAtributo + ": ");
+                    entrada = scanner.nextLine();
+                }
+                return entrada;
+            }
+
+            private String lerDataNascimento() {
+                String data = null;
+                boolean valido = false;
+
+                while (!valido) {
+                    System.out.println("Digite a data de nascimento (no formato Ano-Mes-Dia): ");
+                    String input = scanner.nextLine();
+
+                    try {
+                        LocalDate.parse(input);
+                        data = input;
+                        valido = true;
+                    } catch (Exception ex) {
+                        System.out.println("Formato de data inválido! Use o formato Ano-Mes-Dia.");
+                    }
+                }
+                return data;
+            }
+
+            private Comportamento inserirComportamentos(Comportamento comportamento) {
+                boolean adicionarMais = true;
+                while (adicionarMais) {
+                    System.out.println("Deseja adicionar algum comportamento especial ao animal?");
+                    System.out.println("1 - Voar");
+                    System.out.println("2 - Nadar");
+                    System.out.println("3 - Rastejar");
+                    System.out.println("4 - Correr");
+                    System.out.println("0 - Parar de adicionar comportamentos");
+                    int opcao = lerInteiro("opção");
+
+                    switch (opcao) {
+                        case 1:
+                            comportamento = new ComportamentoVoar(comportamento);
+                            break;
+                        case 2:
+                            comportamento = new ComportamentoNadar(comportamento);
+                            break;
+                        case 3:
+                            comportamento = new ComportamentoRastejar(comportamento);
+                            break;
+                        case 4:
+                            comportamento = new ComportamentoCorrer(comportamento);
+                            break;
+                        case 0:
+                            adicionarMais = false;
+                            break;
+                        default:
+                            System.out.println("Opção inválida. Tente novamente.");
+                            break;
+                    }
+                }
+                return comportamento;
             }
         }
-        return entrada;
-    }
-
-    private String lerString(String nomeAtributo) {
-        String entrada = "";
-
-        while (entrada.trim().isEmpty()) {
-            System.out.println("Digite o " + nomeAtributo + ": ");
-            entrada = scanner.nextLine();
-        }
-        return entrada;
-    }
-
-    private LocalDate lerDataNascimento() {
-        LocalDate data = null;
-        boolean valido = false;
-
-        while (!valido) {
-            System.out.println("Digite a data de nascimento (no formato Ano-Mes-Dia): ");
-            String input = scanner.nextLine();
-
-            try {
-                data = LocalDate.parse(input);
-                valido = true;
-            } catch (Exception ex) {
-                System.out.println("Formato de data inválido! Use o formato Ano-Mes-Dia.");
-            }
-        }
-        return data;
-    }
-}
