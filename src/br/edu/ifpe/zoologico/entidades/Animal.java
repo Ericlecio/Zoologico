@@ -3,7 +3,7 @@ package br.edu.ifpe.zoologico.entidades;
 import br.edu.ifpe.zoologico.util.AdapterDataNascimento;
 import br.edu.ifpe.zoologico.util.DataNascimento;
 
-public class Animal extends EntidadeBase {
+public abstract class Animal extends EntidadeBase {
     private String nome;
     private String especie;
     private String dataNascimento;
@@ -61,6 +61,10 @@ public class Animal extends EntidadeBase {
         return adapterDataNascimento.formatarSistemaPortugues(dataNascimento);
     }
 
+    public abstract void limpar();
+
+    public abstract void alimentarAnimal();
+
     public static class AnimalBuilder {
         private Integer id;
         private String nome;
@@ -88,7 +92,15 @@ public class Animal extends EntidadeBase {
         }
 
         public Animal criar() {
-            return new Animal(nome, especie, dataNascimento);
+            return new Animal(nome, especie, dataNascimento) {
+                @Override
+                public void limpar() {
+                }
+
+                @Override
+                public void alimentarAnimal() {
+                }
+            };
         }
     }
 }

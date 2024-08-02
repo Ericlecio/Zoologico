@@ -73,13 +73,23 @@ public class TelaAnimal {
         String nome = lerString("nome");
         String especie = lerString("espécie");
         String dataNascimento = lerDataNascimento();
+        int tipoAnimal = lerInteiro("tipo de animal (1-Mamífero, 2-Ave, 3-Réptil)");
 
-        Animal.AnimalBuilder builder = new Animal.AnimalBuilder()
-                .nome(nome)
-                .especie(especie)
-                .dataNascimento(dataNascimento);
-
-        Animal animal = builder.criar();
+        Animal animal;
+        switch (tipoAnimal) {
+            case 1:
+                animal = new AnimalMamifero(nome, especie, dataNascimento);
+                break;
+            case 2:
+                animal = new AnimalAve(nome, especie, dataNascimento);
+                break;
+            case 3:
+                animal = new AnimalReptil(nome, especie, dataNascimento);
+                break;
+            default:
+                System.out.println("Tipo de animal inválido.");
+                return;
+        }
 
         Comportamento comportamento = new AnimalConcreto(animal);
         comportamento = inserirComportamentos(comportamento);
@@ -161,128 +171,132 @@ public class TelaAnimal {
                 System.out.println("Espécie: " + animal.getEspecie());
                 System.out.println("Data de Nascimento (Extenso): " + dataNascimentoAdapter.formatarExtenso(animal.getDataNascimento()));
                 System.out.println("Data de Nascimento (Sistema Português): " + dataNascimentoAdapter.formatarSistemaPortugues(animal.getDataNascimento()));
-                        if (animal.getComportamento() != null) {
-                            animal.getComportamento().Acao();
-                        } else {
-                            System.out.println("Este animal não possui ações especiais.");
-                        }
+                if (animal.getComportamento() != null) {
+                    animal.getComportamento().Acao();
+                } else {
+                    System.out.println("Este animal não possui ações especiais.");
+                }
+                animal.limpar();
+                animal.alimentarAnimal();
+            } else {
+                System.out.println("Animal não encontrado.");
+            }
+        } catch (ExcecaoNegocio e) {
+            System.out.println("Erro ao consultar animal: " + e.getMessage());
+        }
+    }
+
+    private void consultarTodosAnimais() {
+        System.out.println("Lista de Todos os Animais");
+        IControladorAnimal controlador = FabricaControlador.getControladorAnimal();
+
+        try {
+            List<Animal> animais = controlador.consultarTodos();
+            if (!animais.isEmpty()) {
+                System.out.println("Lista de animais:");
+                for (Animal animal : animais) {
+                    System.out.println("---------------------------------------------");
+                    System.out.println("ID: " + animal.getId());
+                    System.out.println("Nome: " + animal.getNome());
+                    System.out.println("Espécie: " + animal.getEspecie());
+                    System.out.println("Data de Nascimento (Extenso): " + dataNascimentoAdapter.formatarExtenso(animal.getDataNascimento()));
+                    System.out.println("Data de Nascimento (Sistema Português): " + dataNascimentoAdapter.formatarSistemaPortugues(animal.getDataNascimento()));
+                    if (animal.getComportamento() != null) {
+                        animal.getComportamento().Acao();
                     } else {
-                        System.out.println("Animal não encontrado.");
+                        System.out.println("Este animal não possui ações especiais.");
                     }
-                } catch (ExcecaoNegocio e) {
-                    System.out.println("Erro ao consultar animal: " + e.getMessage());
+                    animal.limpar();
+                    animal.alimentarAnimal();
                 }
+                System.out.println("---------------------------------------------");
+            } else {
+                System.out.println("Não há animais cadastrados.");
             }
+        } catch (ExcecaoNegocio e) {
+            System.out.println("Erro ao consultar animais: " + e.getMessage());
+        }
+    }
 
-            private void consultarTodosAnimais() {
-                System.out.println("Lista de Todos os Animais");
-                IControladorAnimal controlador = FabricaControlador.getControladorAnimal();
+    private int lerInteiro(String mensagem) {
+        int entrada = 0;
+        boolean valido = false;
 
-                try {
-                    List<Animal> animais = controlador.consultarTodos();
-                    if (!animais.isEmpty()) {
-                        System.out.println("Lista de animais:");
-                        for (Animal animal : animais) {
-                            System.out.println("---------------------------------------------");
-                            System.out.println("ID: " + animal.getId());
-                            System.out.println("Nome: " + animal.getNome());
-                            System.out.println("Espécie: " + animal.getEspecie());
-                            System.out.println("Data de Nascimento (Extenso): " + dataNascimentoAdapter.formatarExtenso(animal.getDataNascimento()));
-                            System.out.println("Data de Nascimento (Sistema Português): " + dataNascimentoAdapter.formatarSistemaPortugues(animal.getDataNascimento()));
-                            if (animal.getComportamento() != null) {
-                                animal.getComportamento().Acao();
-                            } else {
-                                System.out.println("Este animal não possui ações especiais.");
-                            }
-                        }
-                        System.out.println("---------------------------------------------");
-                    } else {
-                        System.out.println("Não há animais cadastrados.");
-                    }
-                } catch (ExcecaoNegocio e) {
-                    System.out.println("Erro ao consultar animais: " + e.getMessage());
-                }
-            }
+        while (!valido) {
+            System.out.println("Digite o " + mensagem + ": ");
+            String input = scanner.nextLine();
 
-            private int lerInteiro(String mensagem) {
-                int entrada = 0;
-                boolean valido = false;
-
-                while (!valido) {
-                    System.out.println("Digite o " + mensagem + ": ");
-                    String input = scanner.nextLine();
-
-                    try {
-                        entrada = Integer.parseInt(input);
-                        valido = true;
-                    } catch (NumberFormatException ex) {
-                        System.out.println("Digite apenas números inteiros!");
-                    }
-                }
-                return entrada;
-            }
-
-            private String lerString(String nomeAtributo) {
-                String entrada = "";
-
-                while (entrada.trim().isEmpty()) {
-                    System.out.println("Digite o " + nomeAtributo + ": ");
-                    entrada = scanner.nextLine();
-                }
-                return entrada;
-            }
-
-            private String lerDataNascimento() {
-                String data = null;
-                boolean valido = false;
-
-                while (!valido) {
-                    System.out.println("Digite a data de nascimento (no formato Ano-Mes-Dia): ");
-                    String input = scanner.nextLine();
-
-                    try {
-                        LocalDate.parse(input);
-                        data = input;
-                        valido = true;
-                    } catch (Exception ex) {
-                        System.out.println("Formato de data inválido! Use o formato Ano-Mes-Dia.");
-                    }
-                }
-                return data;
-            }
-
-            private Comportamento inserirComportamentos(Comportamento comportamento) {
-                boolean adicionarMais = true;
-                while (adicionarMais) {
-                    System.out.println("Deseja adicionar algum comportamento especial ao animal?");
-                    System.out.println("1 - Voar");
-                    System.out.println("2 - Nadar");
-                    System.out.println("3 - Rastejar");
-                    System.out.println("4 - Correr");
-                    System.out.println("0 - Parar de adicionar comportamentos");
-                    int opcao = lerInteiro("opção");
-
-                    switch (opcao) {
-                        case 1:
-                            comportamento = new ComportamentoVoar(comportamento);
-                            break;
-                        case 2:
-                            comportamento = new ComportamentoNadar(comportamento);
-                            break;
-                        case 3:
-                            comportamento = new ComportamentoRastejar(comportamento);
-                            break;
-                        case 4:
-                            comportamento = new ComportamentoCorrer(comportamento);
-                            break;
-                        case 0:
-                            adicionarMais = false;
-                            break;
-                        default:
-                            System.out.println("Opção inválida. Tente novamente.");
-                            break;
-                    }
-                }
-                return comportamento;
+            try {
+                entrada = Integer.parseInt(input);
+                valido = true;
+            } catch (NumberFormatException ex) {
+                System.out.println("Digite apenas números inteiros!");
             }
         }
+        return entrada;
+    }
+
+    private String lerString(String nomeAtributo) {
+        String entrada = "";
+
+        while (entrada.trim().isEmpty()) {
+            System.out.println("Digite o " + nomeAtributo + ": ");
+            entrada = scanner.nextLine();
+        }
+        return entrada;
+    }
+
+    private String lerDataNascimento() {
+        String data = null;
+        boolean valido = false;
+
+        while (!valido) {
+            System.out.println("Digite a data de nascimento (no formato Ano-Mes-Dia): ");
+            String input = scanner.nextLine();
+
+            try {
+                LocalDate.parse(input);
+                data = input;
+                valido = true;
+            } catch (Exception ex) {
+                System.out.println("Formato de data inválido! Use o formato Ano-Mes-Dia.");
+            }
+        }
+        return data;
+    }
+
+    private Comportamento inserirComportamentos(Comportamento comportamento) {
+        boolean adicionarMais = true;
+        while (adicionarMais) {
+            System.out.println("Deseja adicionar algum comportamento especial ao animal?");
+            System.out.println("1 - Voar");
+            System.out.println("2 - Nadar");
+            System.out.println("3 - Rastejar");
+            System.out.println("4 - Correr");
+            System.out.println("0 - Parar de adicionar comportamentos");
+            int opcao = lerInteiro("opção");
+
+            switch (opcao) {
+                case 1:
+                    comportamento = new ComportamentoVoar(comportamento);
+                    break;
+                case 2:
+                    comportamento = new ComportamentoNadar(comportamento);
+                    break;
+                case 3:
+                    comportamento = new ComportamentoRastejar(comportamento);
+                    break;
+                case 4:
+                    comportamento = new ComportamentoCorrer(comportamento);
+                    break;
+                case 0:
+                    adicionarMais = false;
+                    break;
+                default:
+                    System.out.println("Opção inválida. Tente novamente.");
+                    break;
+            }
+        }
+        return comportamento;
+    }
+}
