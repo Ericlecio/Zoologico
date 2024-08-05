@@ -7,12 +7,12 @@ public class AnimalReptil extends Animal {
     }
 
     @Override
-    public void limpar() {
-        System.out.println("Limpando réptil");
+    public String limpar() {
+        return "Limpando réptil com água morna e desinfetante suave";
     }
 
     @Override
-    public void alimentarAnimal() {
-        System.out.println("Alimentando réptil");
+    public String alimentarAnimal() {
+        return "Alimentando réptil com insetos e vegetais";
     }
 }

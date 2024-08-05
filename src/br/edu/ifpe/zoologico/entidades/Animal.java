@@ -61,9 +61,9 @@ public abstract class Animal extends EntidadeBase {
         return adapterDataNascimento.formatarSistemaPortugues(dataNascimento);
     }
 
-    public abstract void limpar();
+    public abstract String limpar();
 
-    public abstract void alimentarAnimal();
+    public abstract String alimentarAnimal();
 
     public static class AnimalBuilder {
         private Integer id;
@@ -94,11 +94,13 @@ public abstract class Animal extends EntidadeBase {
         public Animal criar() {
             return new Animal(nome, especie, dataNascimento) {
                 @Override
-                public void limpar() {
+                public String limpar() {
+                    return "Limpando animal genérico";
                 }
 
                 @Override
-                public void alimentarAnimal() {
+                public String alimentarAnimal() {
+                    return "Alimentando animal genérico";
                 }
             };
         }

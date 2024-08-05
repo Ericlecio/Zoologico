@@ -7,12 +7,12 @@ public class AnimalAve extends Animal {
     }
 
     @Override
-    public void limpar() {
-        System.out.println("Limpando ave");
+    public String limpar() {
+        return "Limpando ave com spray de água";
     }
 
     @Override
-    public void alimentarAnimal() {
-        System.out.println("Alimentando ave");
+    public String alimentarAnimal() {
+        return "Alimentando ave com sementes e frutas";
     }
 }
