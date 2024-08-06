@@ -1,9 +1,9 @@
 package br.edu.ifpe.zoologico.entidades;
 
-public class AnimalConcreto implements Comportamento {
+public class AnimalComportamento implements Comportamento {
     private Animal animal;
 
-    public AnimalConcreto(Animal animal) {
+    public AnimalComportamento(Animal animal) {
         this.animal = animal;
     }
 

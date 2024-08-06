@@ -1,5 +1,5 @@
 package br.edu.ifpe.zoologico.entidades;
 
-public interface Comportamento {
+public interface IComportamento {
     String Acao();
 }
