@@ -5,27 +5,27 @@ import br.edu.ifpe.zoologico.excecoes.ExcecaoNegocio;
 
 public class ControladorAnimal extends ControladorGenerico<Animal> implements IControladorAnimal {
 
-    public ControladorAnimal() {
-        super();
-    }
+	public ControladorAnimal() {
+		super();
+	}
 
-    @Override
-    public void inserir(Animal animal) throws ExcecaoNegocio {
-        if (!isValido(animal)) {
-            throw new ExcecaoNegocio("Animal inválido!");
-        }
-        getDao().inserir(animal);
-    }
+	@Override
+	public void inserir(Animal animal) throws ExcecaoNegocio {
+		if (!isValido(animal)) {
+			throw new ExcecaoNegocio("Animal inválido!");
+		}
+		getDao().inserir(animal);
+	}
 
-    @Override
-    public void editar(Animal animal) throws ExcecaoNegocio {
-        if (!isValido(animal)) {
-            throw new ExcecaoNegocio("Animal inválido!");
-        }
-        getDao().editar(animal);
-    }
+	@Override
+	public void editar(Animal animal) throws ExcecaoNegocio {
+		if (!isValido(animal)) {
+			throw new ExcecaoNegocio("Animal inválido!");
+		}
+		getDao().editar(animal);
+	}
 
-    private boolean isValido(Animal animal) {
-        return true;
-    }
+	private boolean isValido(Animal animal) {
+		return true;
+	}
 }

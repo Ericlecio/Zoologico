@@ -5,30 +5,30 @@ import br.edu.ifpe.zoologico.entidades.Animal;
 import br.edu.ifpe.zoologico.excecoes.ExcecaoNegocio;
 
 public class Fachada  {
-    private ControladorAnimal controladorAnimal;
+	private ControladorAnimal controladorAnimal;
 
-    public Fachada() {
-        this.controladorAnimal = new ControladorAnimal(); // Inicialize o controladorAnimal aqui
-    }
+	public Fachada() {
+		this.controladorAnimal = new ControladorAnimal();
+	}
 
-    public void cadastrarAnimal(Animal animal) throws ExcecaoNegocio {
-        controladorAnimal.inserir(animal);
-    }
+	public void cadastrarAnimal(Animal animal) throws ExcecaoNegocio {
+		controladorAnimal.inserir(animal);
+	}
 
-    public void editar(Animal animal) throws ExcecaoNegocio {
-        controladorAnimal.editar(animal);
-    }
+	public void editar(Animal animal) throws ExcecaoNegocio {
+		controladorAnimal.editar(animal);
+	}
 
-    public void remover(int id) throws ExcecaoNegocio {
-        controladorAnimal.remover(id);
-    }
+	public void remover(int id) throws ExcecaoNegocio {
+		controladorAnimal.remover(id);
+	}
 
-    public Animal consultarPorId(int id) throws ExcecaoNegocio {
-        return controladorAnimal.consultarPorId(id);
-    }
+	public Animal consultarPorId(int id) throws ExcecaoNegocio {
+		return controladorAnimal.consultarPorId(id);
+	}
 
-    public List<Animal> consultarTodos() throws ExcecaoNegocio {
-        return controladorAnimal.consultarTodos();
-    }
+	public List<Animal> consultarTodos() throws ExcecaoNegocio {
+		return controladorAnimal.consultarTodos();
+	}
 }
 

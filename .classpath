@@ -6,6 +6,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry exported="true" kind="lib" path="C:/Users/etma/Documents/Zoologico/joda-time-2.12.7.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ericl/Documents/GitHub/Zoologico/joda-time-2.12.7.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

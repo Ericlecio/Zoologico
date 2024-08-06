@@ -1,0 +1,9 @@
+2024-08-06 14:55:49 - Finalização da adição de comportamentos.
+2024-08-06 14:55:49 - Animal cadastrado com sucesso. ID: 1, Nome: cachorro, Espécie: cachorro
+2024-08-06 14:55:55 - Erro ao consultar animal com ID: 2 - null
+2024-08-06 14:55:57 - Consulta de animal com sucesso. ID: 1
+2024-08-06 14:56:00 - Consulta de todos os animais realizada com sucesso.
+2024-08-06 14:56:13 - Erro ao remover animal com ID: 2 - null
+2024-08-06 14:56:16 - Animal removido com sucesso. ID: 1
+2024-08-06 14:56:19 - Nenhum animal cadastrado encontrado na consulta de todos os animais.
+2024-08-06 14:56:29 - Usuário saiu do sistema.
