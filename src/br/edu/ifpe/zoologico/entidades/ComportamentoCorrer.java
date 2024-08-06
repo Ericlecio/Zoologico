@@ -1,21 +1,22 @@
 package br.edu.ifpe.zoologico.entidades;
 
 public class ComportamentoCorrer implements Comportamento {
-	private Comportamento comportamento;
+    private Comportamento comportamento;
 
-	public ComportamentoCorrer(Comportamento comportamento) {
-		this.comportamento = comportamento;
-	}
+    public ComportamentoCorrer(Comportamento comportamento) {
+        this.comportamento = comportamento;
+    }
 
-	@Override
-	public void Acao() {
-		if (comportamento != null) {
-			comportamento.Acao();
-		}
-		Correr();
-	}
+    @Override
+    public String Acao() {
+        String acao = "";
+        if (comportamento != null) {
+            acao = comportamento.Acao();
+        }
+        return acao + Correr();
+    }
 
-	private void Correr() {
-		System.out.println("Este animal corre.");
-	}
+    private String Correr() {
+        return "Este animal corre.";
+    }
 }

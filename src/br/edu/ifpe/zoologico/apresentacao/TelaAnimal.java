@@ -135,7 +135,7 @@ public class TelaAnimal {
         animalExistente.setComportamento(comportamento);
 
         try {
-            controlador.editar(animalExistente);
+            Fachada.editar(animalExistente);
             System.out.println("Animal editado com sucesso!");
         } catch (ExcecaoNegocio e) {
             System.out.println("Erro ao editar animal com o id " + animalExistente.getId());
@@ -172,7 +172,7 @@ public class TelaAnimal {
                 System.out.println("Data de Nascimento (Extenso): " + dataNascimentoAdapter.formatarExtenso(animal.getDataNascimento()));
                 System.out.println("Data de Nascimento (Sistema Português): " + dataNascimentoAdapter.formatarSistemaPortugues(animal.getDataNascimento()));
                 if (animal.getComportamento() != null) {
-                    animal.getComportamento().Acao();
+                    System.out.println(animal.getComportamento().Acao());
                 } else {
                     System.out.println("Este animal não possui ações especiais.");
                 }
@@ -202,7 +202,7 @@ public class TelaAnimal {
                     System.out.println("Data de Nascimento (Extenso): " + dataNascimentoAdapter.formatarExtenso(animal.getDataNascimento()));
                     System.out.println("Data de Nascimento (Sistema Português): " + dataNascimentoAdapter.formatarSistemaPortugues(animal.getDataNascimento()));
                     if (animal.getComportamento() != null) {
-                        animal.getComportamento().Acao();
+                        System.out.println(animal.getComportamento().Acao());
                     } else {
                         System.out.println("Este animal não possui ações especiais.");
                     }
@@ -259,44 +259,52 @@ public class TelaAnimal {
                 data = input;
                 valido = true;
             } catch (Exception ex) {
-                System.out.println("Formato de data inválido! Use o formato Ano-Mes-Dia.");
+                System.out.println("Data inválida! Use o formato Ano-Mes-Dia (por exemplo, 2020-01-31).");
             }
         }
         return data;
     }
 
     private Comportamento inserirComportamentos(Comportamento comportamento) {
-        boolean adicionarMais = true;
-        while (adicionarMais) {
-            System.out.println("Deseja adicionar algum comportamento especial ao animal?");
-            System.out.println("1 - Voar");
-            System.out.println("2 - Nadar");
-            System.out.println("3 - Rastejar");
-            System.out.println("4 - Correr");
-            System.out.println("0 - Parar de adicionar comportamentos");
-            int opcao = lerInteiro("opção");
+        int opcaoComportamento = 0;
 
-            switch (opcao) {
+        while (true) {
+            System.out.println("Digite 1 para adicionar comportamento de Correr;");
+            System.out.println("Digite 2 para adicionar comportamento de Dormir;");
+            System.out.println("Digite 3 para adicionar comportamento de Comer;");
+            System.out.println("Digite 4 para adicionar comportamento de Brincar;");
+            System.out.println("Digite 5 para finalizar a adição de comportamentos;");
+            try {
+                opcaoComportamento = Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException ex) {
+                System.out.println("Digite um número válido!");
+                continue;
+            }
+
+            switch (opcaoComportamento) {
                 case 1:
-                    comportamento = new ComportamentoVoar(comportamento);
+                    comportamento = new ComportamentoCorrer(comportamento);
+                    System.out.println("Comportamento de correr adicionado.");
                     break;
                 case 2:
                     comportamento = new ComportamentoNadar(comportamento);
+                    System.out.println("Comportamento de nadar adicionado.");
                     break;
                 case 3:
                     comportamento = new ComportamentoRastejar(comportamento);
+                    System.out.println("Comportamento de rastejar adicionado.");
                     break;
                 case 4:
-                    comportamento = new ComportamentoCorrer(comportamento);
+                    comportamento = new ComportamentoVoar(comportamento);
+                    System.out.println("Comportamento de voar adicionado.");
                     break;
-                case 0:
-                    adicionarMais = false;
-                    break;
+                case 5:
+                    System.out.println("Finalizando a adição de comportamentos.");
+                    return comportamento;
                 default:
-                    System.out.println("Opção inválida. Tente novamente.");
+                    System.out.println("Opção inválida! Digite números entre 1 e 5.");
                     break;
             }
         }
-        return comportamento;
     }
 }

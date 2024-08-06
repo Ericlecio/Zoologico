@@ -1,21 +1,22 @@
 package br.edu.ifpe.zoologico.entidades;
 
 public class ComportamentoNadar implements Comportamento {
-	private Comportamento comportamento;
+    private Comportamento comportamento;
 
     public ComportamentoNadar(Comportamento comportamento) {
         this.comportamento = comportamento;
     }
 
     @Override
-    public void Acao() {
+    public String Acao() {
+        String acao = "";
         if (comportamento != null) {
-            comportamento.Acao();
+            acao = comportamento.Acao();
         }
-        nadar();
+        return acao + nadar();
     }
 
-    private void nadar() {
-        System.out.println("Este animal nada.");
+    private String nadar() {
+        return "Este animal nada.";
     }
 }

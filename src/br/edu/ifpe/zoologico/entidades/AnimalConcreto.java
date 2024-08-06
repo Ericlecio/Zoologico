@@ -8,6 +8,7 @@ public class AnimalConcreto implements Comportamento {
     }
 
     @Override
-    public void Acao() {
+    public String Acao() {
+        return ""; 
     }
 }
