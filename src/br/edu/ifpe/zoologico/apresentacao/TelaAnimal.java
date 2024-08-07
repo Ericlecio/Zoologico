@@ -3,286 +3,321 @@ package br.edu.ifpe.zoologico.apresentacao;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
+
+import br.edu.ifpe.zoologico.log.LogZoologico;
 import br.edu.ifpe.zoologico.entidades.*;
 import br.edu.ifpe.zoologico.excecoes.ExcecaoNegocio;
-import br.edu.ifpe.zoologico.negocio.FabricaControlador;
-import br.edu.ifpe.zoologico.negocio.IControladorAnimal;
+import br.edu.ifpe.zoologico.negocio.Fachada;
 import br.edu.ifpe.zoologico.util.AdapterDataNascimento;
 import br.edu.ifpe.zoologico.util.DataNascimento;
 
 public class TelaAnimal {
 
-    private Scanner scanner;
-    private AdapterDataNascimento dataNascimentoAdapter;
+	private Scanner scanner;
+	private AdapterDataNascimento dataNascimentoAdapter;
+	private Fachada fachada;
 
-    public TelaAnimal() {
-        this.scanner = new Scanner(System.in);
-        this.dataNascimentoAdapter = new DataNascimento();
-    }
+	public TelaAnimal() {
+		this.scanner = new Scanner(System.in);
+		this.dataNascimentoAdapter = new DataNascimento();
+		this.fachada = new Fachada();
+	}
 
-    public void exibir() {
-        int opcao = 0;
-        do {
-            System.out.println("-------------------------------------------");
-            System.out.println("Seja Bem Vindo ao Zoologico!");
-            System.out.println("Digite 1 para cadastrar um animal;");
-            System.out.println("Digite 2 para editar os dados de um animal;");
-            System.out.println("Digite 3 para remover um animal;");
-            System.out.println("Digite 4 para consultar um animal específico;");
-            System.out.println("Digite 5 para consultar todos os animais, ou ");
-            System.out.println("Digite 6 para sair");
-            System.out.println("-------------------------------------------");
+	public void exibir() {
+		int opcao;
+		do {
+			System.out.println("\n=============================================");
+			System.out.println("         SEJA BEM-VINDO AO ZOOLÓGICO         ");
+			System.out.println("=============================================");
+			System.out.println("1. Cadastrar um animal");
+			System.out.println("2. Editar os dados de um animal");
+			System.out.println("3. Remover um animal");
+			System.out.println("4. Consultar um animal específico");
+			System.out.println("5. Consultar todos os animais");
+			System.out.println("6. Sair");
+			System.out.println("=============================================");
 
-            try {
-                opcao = Integer.parseInt(scanner.nextLine());
-            } catch (NumberFormatException ex) {
-                System.out.println("Digite um número válido!");
-                continue;
-            }
+			opcao = lerInteiro("uma opção");
 
-            switch (opcao) {
-                case 1:
-                    cadastrarAnimal();
-                    break;
-                case 2:
-                    editarAnimal();
-                    break;
-                case 3:
-                    removerAnimal();
-                    break;
-                case 4:
-                    consultarAnimal();
-                    break;
-                case 5:
-                    consultarTodosAnimais();
-                    break;
-                case 6:
-                    System.out.println("Saindo do sistema...");
-                    break;
-                default:
-                    System.out.println("Opção inválida! Digite os números entre 1 e 6.");
-                    break;
-            }
-        } while (opcao != 6);
-    }
+			switch (opcao) {
+			case 1:
+				cadastrarAnimal();
+				break;
+			case 2:
+				editarAnimal();
+				break;
+			case 3:
+				removerAnimal();
+				break;
+			case 4:
+				consultarAnimal();
+				break;
+			case 5:
+				consultarTodosAnimais();
+				break;
+			case 6:
+				System.out.println("\nSaindo do sistema... Até mais!");
+				LogZoologico.registrarMovimentacao("Usuário saiu do sistema.");
+				break;
+			default:
+				System.out.println("\n[ERRO] Opção inválida! Digite um número entre 1 e 6.");
+				break;
+			}
+		} while (opcao != 6);
+	}
 
-    private void cadastrarAnimal() {
-        System.out.println("Cadastro de Animal");
-        IControladorAnimal controlador = FabricaControlador.getControladorAnimal();
+	private void cadastrarAnimal() {
+		System.out.println("Cadastro de Animal");
+		String nome = lerString("nome");
+		String especie = lerString("espécie");
+		String dataNascimento = lerDataNascimento();
 
-        String nome = lerString("nome");
-        String especie = lerString("espécie");
-        String dataNascimento = lerDataNascimento();
+		int tipoAnimal = lerInteiro("tipo de animal (1-Mamífero, 2-Ave, 3-Réptil)");
 
-        Animal.AnimalBuilder builder = new Animal.AnimalBuilder()
-                .nome(nome)
-                .especie(especie)
-                .dataNascimento(dataNascimento);
+		Animal animal;
+		switch (tipoAnimal) {
+		case 1:
+			animal = new AnimalMamifero(nome, especie, dataNascimento);
+			break;
+		case 2:
+			animal = new AnimalAve(nome, especie, dataNascimento);
+			break;
+		case 3:
+			animal = new AnimalReptil(nome, especie, dataNascimento);
+			break;
+		default:
+			System.out.println("Tipo de animal inválido.");
+			LogZoologico.registrarMovimentacao(String.format("Tentativa de cadastrar um animal com tipo inválido: %d", tipoAnimal));
+			return;
+		}
 
-        Animal animal = builder.criar();
+		Comportamento comportamento = inserirComportamentos();
+		animal.setComportamento(comportamento);
 
-        Comportamento comportamento = new AnimalConcreto(animal);
-        comportamento = inserirComportamentos(comportamento);
-        animal.setComportamento(comportamento);
+		try {
+			fachada.cadastrarAnimal(animal);
+			System.out.println("Animal cadastrado com sucesso! ID: " + animal.getId());
+			LogZoologico.registrarMovimentacao(String.format("Animal cadastrado com sucesso. ID: %d, Nome: %s, Espécie: %s", animal.getId(), animal.getNome(), animal.getEspecie()));
+		} catch (ExcecaoNegocio excecao) {
+			System.out.println("Erro ao cadastrar animal: " + excecao.getMessage());
+			LogZoologico.registrarMovimentacao("Erro ao cadastrar animal: " + excecao.getMessage());
+		}
+	}
 
-        try {
-            controlador.inserir(animal);
-            System.out.println("Animal cadastrado com sucesso! ID: " + animal.getId());
-        } catch (ExcecaoNegocio excecao) {
-            System.out.println("Erro ao cadastrar animal: " + excecao.getMessage());
-        }
-    }
+	private void editarAnimal() {
+		System.out.println("Edição de Animal");
 
-    private void editarAnimal() {
-        System.out.println("Edição de Animal");
-        IControladorAnimal controlador = FabricaControlador.getControladorAnimal();
+		int id = lerInteiro("ID do animal");
 
-        int id = lerInteiro("ID do animal");
+		Animal animalExistente;
+		try {
+			animalExistente = fachada.consultarPorId(id);
+		} catch (ExcecaoNegocio e) {
+			System.out.println("Erro ao consultar animal: " + e.getMessage());
+			LogZoologico.registrarMovimentacao("Erro ao consultar animal com ID: " + id + " - " + e.getMessage());
+			return;
+		}
 
-        Animal animalExistente = null;
-        try {
-            animalExistente = controlador.consultarPorId(id);
-        } catch (ExcecaoNegocio e) {
-            System.out.println("Erro ao consultar animal: " + e.getMessage());
-            return;
-        }
+		if (animalExistente == null) {
+			System.out.println("Animal não encontrado com o ID: " + id);
+			LogZoologico.registrarMovimentacao("Tentativa de editar animal com ID inexistente: " + id);
+			return;
+		}
 
-        if (animalExistente == null) {
-            System.out.println("Animal não encontrado com o ID: " + id);
-            return;
-        }
+		String novoNome = lerString("novo nome");
+		String novaEspecie = lerString("nova espécie");
+		String novaDataNascimento = lerDataNascimento();
 
-        String novoNome = lerString("novo nome");
-        String novaEspecie = lerString("nova espécie");
-        String novaDataNascimento = lerDataNascimento();
+		animalExistente.setNome(novoNome);
+		animalExistente.setEspecie(novaEspecie);
+		animalExistente.setDataNascimento(novaDataNascimento);
 
-        animalExistente.setNome(novoNome);
-        animalExistente.setEspecie(novaEspecie);
-        animalExistente.setDataNascimento(novaDataNascimento);
+		Comportamento comportamento = inserirComportamentos();
+		animalExistente.setComportamento(comportamento);
 
-        Comportamento comportamento = new AnimalConcreto(animalExistente);
-        comportamento = inserirComportamentos(comportamento);
-        animalExistente.setComportamento(comportamento);
+		try {
+			fachada.editar(animalExistente);
+			System.out.println("Animal editado com sucesso!");
+			LogZoologico.registrarMovimentacao(String.format("Animal editado com sucesso. ID: %d, Novo Nome: %s, Nova Espécie: %s", animalExistente.getId(), novoNome, novaEspecie));
+		} catch (ExcecaoNegocio e) {
+			System.out.println("Erro ao editar animal com o id " + animalExistente.getId());
+			LogZoologico.registrarMovimentacao("Erro ao editar animal com ID: " + animalExistente.getId() + " - " + e.getMessage());
+		}
+	}
 
-        try {
-            controlador.editar(animalExistente);
-            System.out.println("Animal editado com sucesso!");
-        } catch (ExcecaoNegocio e) {
-            System.out.println("Erro ao editar animal com o id " + animalExistente.getId());
-        }
-    }
+	private void removerAnimal() {
+		System.out.println("Remoção de Animal");
+		int id = lerInteiro("ID do animal");
 
-    private void removerAnimal() {
-        System.out.println("Remoção de Animal");
-        IControladorAnimal controlador = FabricaControlador.getControladorAnimal();
+		try {
+			fachada.remover(id);
+			System.out.println("Animal removido com sucesso!");
+			LogZoologico.registrarMovimentacao("Animal removido com sucesso. ID: " + id);
+		} catch (ExcecaoNegocio e) {
+			System.out.println("Erro ao remover animal: " + e.getMessage());
+			LogZoologico.registrarMovimentacao("Erro ao remover animal com ID: " + id + " - " + e.getMessage());
+		}
+	}
 
-        int id = lerInteiro("ID do animal");
+	private void consultarAnimal() {
+		System.out.println("Consulta de Animal");
+		int id = lerInteiro("ID do animal");
 
-        try {
-            controlador.remover(id);
-            System.out.println("Animal removido com sucesso!");
-        } catch (ExcecaoNegocio e) {
-            System.out.println("Erro ao remover animal: " + e.getMessage());
-        }
-    }
+		try {
+			Animal animal = fachada.consultarPorId(id);
+			if (animal != null) {
+				exibirInformacoesAnimal(animal);
+				LogZoologico.registrarMovimentacao(String.format("Consulta de animal com sucesso. ID: %d", id));
+			} else {
+				System.out.println("Animal não encontrado.");
+				LogZoologico.registrarMovimentacao("Animal não encontrado com ID: " + id);
+			}
+		} catch (ExcecaoNegocio e) {
+			System.out.println("Erro ao consultar animal: " + e.getMessage());
+			LogZoologico.registrarMovimentacao("Erro ao consultar animal com ID: " + id + " - " + e.getMessage());
+		}
+	}
 
-    private void consultarAnimal() {
-        System.out.println("Consulta de Animal");
-        IControladorAnimal controlador = FabricaControlador.getControladorAnimal();
+	private void consultarTodosAnimais() {
+		System.out.println("Lista de Todos os Animais");
 
-        int id = lerInteiro("ID do animal");
+		try {
+			List<Animal> animais = fachada.consultarTodos();
+			if (!animais.isEmpty()) {
+				System.out.println("Lista de animais:");
+				for (Animal animal : animais) {
+					System.out.println("---------------------------------------------");
+					exibirInformacoesAnimal(animal);
+				}
+				System.out.println("---------------------------------------------");
+				LogZoologico.registrarMovimentacao("Consulta de todos os animais realizada com sucesso.");
+			} else {
+				System.out.println("Não há animais cadastrados.");
+				LogZoologico.registrarMovimentacao("Nenhum animal cadastrado encontrado na consulta de todos os animais.");
+			}
+		} catch (ExcecaoNegocio e) {
+			System.out.println("Erro ao consultar animais: " + e.getMessage());
+			LogZoologico.registrarMovimentacao("Erro ao consultar todos os animais: " + e.getMessage());
+		}
+	}
 
-        try {
-            Animal animal = controlador.consultarPorId(id);
-            if (animal != null) {
-                System.out.println("Animal encontrado:");
-                System.out.println("ID: " + animal.getId());
-                System.out.println("Nome: " + animal.getNome());
-                System.out.println("Espécie: " + animal.getEspecie());
-                System.out.println("Data de Nascimento (Extenso): " + dataNascimentoAdapter.formatarExtenso(animal.getDataNascimento()));
-                System.out.println("Data de Nascimento (Sistema Português): " + dataNascimentoAdapter.formatarSistemaPortugues(animal.getDataNascimento()));
-                        if (animal.getComportamento() != null) {
-                            animal.getComportamento().Acao();
-                        } else {
-                            System.out.println("Este animal não possui ações especiais.");
-                        }
-                    } else {
-                        System.out.println("Animal não encontrado.");
-                    }
-                } catch (ExcecaoNegocio e) {
-                    System.out.println("Erro ao consultar animal: " + e.getMessage());
-                }
-            }
+	private void exibirInformacoesAnimal(Animal animal) {
+		System.out.println("ID: " + animal.getId());
+		System.out.println("Nome: " + animal.getNome());
+		System.out.println("Espécie: " + animal.getEspecie());
+		System.out.println("Data de Nascimento (Extenso): " + animal.getDataNascimentoExtenso());
+		System.out.println("Data de Nascimento (Sistema Português): " + animal.getDataNascimentoSistemaPortugues());
 
-            private void consultarTodosAnimais() {
-                System.out.println("Lista de Todos os Animais");
-                IControladorAnimal controlador = FabricaControlador.getControladorAnimal();
+		if (animal instanceof AnimalMamifero) {
+			System.out.println("Tipo: Mamífero");
+		} else if (animal instanceof AnimalAve) {
+			System.out.println("Tipo: Ave");
+		} else if (animal instanceof AnimalReptil) {
+			System.out.println("Tipo: Réptil");
+		}
 
-                try {
-                    List<Animal> animais = controlador.consultarTodos();
-                    if (!animais.isEmpty()) {
-                        System.out.println("Lista de animais:");
-                        for (Animal animal : animais) {
-                            System.out.println("---------------------------------------------");
-                            System.out.println("ID: " + animal.getId());
-                            System.out.println("Nome: " + animal.getNome());
-                            System.out.println("Espécie: " + animal.getEspecie());
-                            System.out.println("Data de Nascimento (Extenso): " + dataNascimentoAdapter.formatarExtenso(animal.getDataNascimento()));
-                            System.out.println("Data de Nascimento (Sistema Português): " + dataNascimentoAdapter.formatarSistemaPortugues(animal.getDataNascimento()));
-                            if (animal.getComportamento() != null) {
-                                animal.getComportamento().Acao();
-                            } else {
-                                System.out.println("Este animal não possui ações especiais.");
-                            }
-                        }
-                        System.out.println("---------------------------------------------");
-                    } else {
-                        System.out.println("Não há animais cadastrados.");
-                    }
-                } catch (ExcecaoNegocio e) {
-                    System.out.println("Erro ao consultar animais: " + e.getMessage());
-                }
-            }
+		System.out.println("Método de Limpeza: " + animal.limpar());
+		System.out.println("Método de Alimentação: " + animal.alimentarAnimal());
 
-            private int lerInteiro(String mensagem) {
-                int entrada = 0;
-                boolean valido = false;
+		if (animal.getComportamento() != null) {
+			System.out.println("Comportamento: " + animal.getComportamento().Acao());
+		} else {
+			System.out.println("Este animal não possui ações especiais.");
+		}
+	}
 
-                while (!valido) {
-                    System.out.println("Digite o " + mensagem + ": ");
-                    String input = scanner.nextLine();
+	private int lerInteiro(String mensagem) {
+		int entrada = 0;
+		boolean valido = false;
 
-                    try {
-                        entrada = Integer.parseInt(input);
-                        valido = true;
-                    } catch (NumberFormatException ex) {
-                        System.out.println("Digite apenas números inteiros!");
-                    }
-                }
-                return entrada;
-            }
+		while (!valido) {
+			System.out.println("Digite o " + mensagem + ": ");
+			String input = scanner.nextLine();
 
-            private String lerString(String nomeAtributo) {
-                String entrada = "";
+			try {
+				entrada = Integer.parseInt(input);
+				valido = true;
+			} catch (NumberFormatException ex) {
+				System.out.println("Entrada inválida! Digite apenas números inteiros.");
+			}
+		}
+		return entrada;
+	}
 
-                while (entrada.trim().isEmpty()) {
-                    System.out.println("Digite o " + nomeAtributo + ": ");
-                    entrada = scanner.nextLine();
-                }
-                return entrada;
-            }
+	private String lerString(String nomeAtributo) {
+		String entrada = "";
 
-            private String lerDataNascimento() {
-                String data = null;
-                boolean valido = false;
+		while (entrada.trim().isEmpty() || !isStringValida(entrada)) {
+			System.out.println("Digite o " + nomeAtributo + " (somente letras e espaços): ");
+			entrada = scanner.nextLine();
+			if (!isStringValida(entrada)) {
+				System.out.println("Entrada inválida! O " + nomeAtributo + " deve conter apenas letras e espaços.");
+			}
+		}
+		return entrada;
+	}
 
-                while (!valido) {
-                    System.out.println("Digite a data de nascimento (no formato Ano-Mes-Dia): ");
-                    String input = scanner.nextLine();
+	private boolean isStringValida(String entrada) {
+		return entrada.matches("[a-zA-Z\\s]+");
+	}
 
-                    try {
-                        LocalDate.parse(input);
-                        data = input;
-                        valido = true;
-                    } catch (Exception ex) {
-                        System.out.println("Formato de data inválido! Use o formato Ano-Mes-Dia.");
-                    }
-                }
-                return data;
-            }
+	private String lerDataNascimento() {
+		String data = null;
+		boolean valido = false;
 
-            private Comportamento inserirComportamentos(Comportamento comportamento) {
-                boolean adicionarMais = true;
-                while (adicionarMais) {
-                    System.out.println("Deseja adicionar algum comportamento especial ao animal?");
-                    System.out.println("1 - Voar");
-                    System.out.println("2 - Nadar");
-                    System.out.println("3 - Rastejar");
-                    System.out.println("4 - Correr");
-                    System.out.println("0 - Parar de adicionar comportamentos");
-                    int opcao = lerInteiro("opção");
+		while (!valido) {
+			System.out.println("Digite a data de nascimento (no formato Ano-Mês-Dia): ");
+			String input = scanner.nextLine();
 
-                    switch (opcao) {
-                        case 1:
-                            comportamento = new ComportamentoVoar(comportamento);
-                            break;
-                        case 2:
-                            comportamento = new ComportamentoNadar(comportamento);
-                            break;
-                        case 3:
-                            comportamento = new ComportamentoRastejar(comportamento);
-                            break;
-                        case 4:
-                            comportamento = new ComportamentoCorrer(comportamento);
-                            break;
-                        case 0:
-                            adicionarMais = false;
-                            break;
-                        default:
-                            System.out.println("Opção inválida. Tente novamente.");
-                            break;
-                    }
-                }
-                return comportamento;
-            }
-        }
+			try {
+				LocalDate.parse(input);
+				data = input;
+				valido = true;
+			} catch (Exception ex) {
+				System.out.println("Data inválida! Use o formato Ano-Mês-Dia (por exemplo, 2020-01-31).");
+			}
+		}
+		return data;
+	}
+
+	private Comportamento inserirComportamentos() {
+		Comportamento comportamento = null;
+		int opcaoComportamento;
+
+		while (true) {
+			System.out.println("Escolha um comportamento para adicionar:");
+			System.out.println("1. Correr");
+			System.out.println("2. Nadar");
+			System.out.println("3. Rastejar");
+			System.out.println("4. Voar");
+			System.out.println("5. Finalizar");
+			opcaoComportamento = lerInteiro("uma opção");
+
+			switch (opcaoComportamento) {
+			case 1:
+				comportamento = new ComportamentoCorrer(comportamento);
+				System.out.println("Comportamento de correr adicionado.");
+				break;
+			case 2:
+				comportamento = new ComportamentoNadar(comportamento);
+				System.out.println("Comportamento de nadar adicionado.");
+				break;
+			case 3:
+				comportamento = new ComportamentoRastejar(comportamento);
+				System.out.println("Comportamento de rastejar adicionado.");
+				break;
+			case 4:
+				comportamento = new ComportamentoVoar(comportamento);
+				System.out.println("Comportamento de voar adicionado.");
+				break;
+			case 5:
+				System.out.println("Finalizado a adição de comportamentos.");
+				LogZoologico.registrarMovimentacao("Finalização da adição de comportamentos.");
+				return comportamento;
+			default:
+				System.out.println("Opção inválida! Digite números entre 1 e 5.");
+				break;
+			}
+		}
+	}
+}

@@ -8,14 +8,15 @@ public class ComportamentoCorrer implements Comportamento {
 	}
 
 	@Override
-	public void Acao() {
+	public String Acao() {
+		String acao = "";
 		if (comportamento != null) {
-			comportamento.Acao();
+			acao = comportamento.Acao();
 		}
-		Correr();
+		return acao + Correr();
 	}
 
-	private void Correr() {
-		System.out.println("Este animal corre.");
+	private String Correr() {
+		return " corre.";
 	}
 }
