@@ -67,83 +67,98 @@ public class TelaAnimal {
 	}
 
 	private void cadastrarAnimal() {
-		System.out.println("Cadastro de Animal");
-		String nome = lerString("nome");
-		String especie = lerString("espécie");
-		String dataNascimento = lerDataNascimento();
+	    System.out.println("Cadastro de Animal");
+	    String nome = lerString("nome");
+	    String especie = lerString("espécie");
+	    String dataNascimento = lerDataNascimento();
+	    
+	    int tipoAnimal = 0;
+	    boolean tipoAnimalValido = false;
+	    
+	    while (!tipoAnimalValido) {
+	        tipoAnimal = lerInteiro("tipo de animal (1-Mamífero, 2-Ave, 3-Réptil)");
+	        
+	        if (tipoAnimal < 1 || tipoAnimal > 3) {
+	            System.out.println("Tipo de animal inválido. Por favor, tente novamente.");
+	            LogZoologico.registrarMovimentacao(String.format("Tentativa de cadastrar um animal com tipo inválido: %d", tipoAnimal));
+	        } else {
+	            tipoAnimalValido = true;
+	        }
+	    }
 
-		int tipoAnimal = lerInteiro("tipo de animal (1-Mamífero, 2-Ave, 3-Réptil)");
+	    Animal animal;
+	    switch (tipoAnimal) {
+	        case 1:
+	            animal = new AnimalMamifero(nome, especie, dataNascimento);
+	            break;
+	        case 2:
+	            animal = new AnimalAve(nome, especie, dataNascimento);
+	            break;
+	        case 3:
+	            animal = new AnimalReptil(nome, especie, dataNascimento);
+	            break;
+	        default:
+	            return;
+	    }
 
-		Animal animal;
-		switch (tipoAnimal) {
-		case 1:
-			animal = new AnimalMamifero(nome, especie, dataNascimento);
-			break;
-		case 2:
-			animal = new AnimalAve(nome, especie, dataNascimento);
-			break;
-		case 3:
-			animal = new AnimalReptil(nome, especie, dataNascimento);
-			break;
-		default:
-			System.out.println("Tipo de animal inválido.");
-			LogZoologico.registrarMovimentacao(String.format("Tentativa de cadastrar um animal com tipo inválido: %d", tipoAnimal));
-			return;
-		}
+	    Comportamento comportamento = inserirComportamentos();
+	    animal.setComportamento(comportamento);
 
-		Comportamento comportamento = inserirComportamentos();
-		animal.setComportamento(comportamento);
-
-		try {
-			fachada.cadastrarAnimal(animal);
-			System.out.println("Animal cadastrado com sucesso! ID: " + animal.getId());
-			LogZoologico.registrarMovimentacao(String.format("Animal cadastrado com sucesso. ID: %d, Nome: %s, Espécie: %s", animal.getId(), animal.getNome(), animal.getEspecie()));
-		} catch (ExcecaoNegocio excecao) {
-			System.out.println("Erro ao cadastrar animal: " + excecao.getMessage());
-			LogZoologico.registrarMovimentacao("Erro ao cadastrar animal: " + excecao.getMessage());
-		}
+	    try {
+	        fachada.cadastrarAnimal(animal);
+	        System.out.println("Animal cadastrado com sucesso! ID: " + animal.getId());
+	        LogZoologico.registrarMovimentacao(String.format("Animal cadastrado com sucesso. ID: %d, Nome: %s, Espécie: %s", animal.getId(), animal.getNome(), animal.getEspecie()));
+	    } catch (ExcecaoNegocio excecao) {
+	        System.out.println("Erro ao cadastrar animal: " + excecao.getMessage());
+	        LogZoologico.registrarMovimentacao("Erro ao cadastrar animal: " + excecao.getMessage());
+	    }
 	}
+
 
 	private void editarAnimal() {
-		System.out.println("Edição de Animal");
+	    System.out.println("Edição de Animal");
 
-		int id = lerInteiro("ID do animal");
+	    Animal animalExistente = null;
+	    int id = -1;
 
-		Animal animalExistente;
-		try {
-			animalExistente = fachada.consultarPorId(id);
-		} catch (ExcecaoNegocio e) {
-			System.out.println("Erro ao consultar animal: " + e.getMessage());
-			LogZoologico.registrarMovimentacao("Erro ao consultar animal com ID: " + id + " - " + e.getMessage());
-			return;
-		}
+	    while (animalExistente == null) {
+	        id = lerInteiro("ID do animal");
 
-		if (animalExistente == null) {
-			System.out.println("Animal não encontrado com o ID: " + id);
-			LogZoologico.registrarMovimentacao("Tentativa de editar animal com ID inexistente: " + id);
-			return;
-		}
+	        try {
+	            animalExistente = fachada.consultarPorId(id);
+	        } catch (ExcecaoNegocio e) {
+	            System.out.println("Erro ao consultar animal: " + e.getMessage());
+	            LogZoologico.registrarMovimentacao("Erro ao consultar animal com ID: " + id + " - " + e.getMessage());
+	            continue;
+	        }
 
-		String novoNome = lerString("novo nome");
-		String novaEspecie = lerString("nova espécie");
-		String novaDataNascimento = lerDataNascimento();
+	        if (animalExistente == null) {
+	            System.out.println("Animal não encontrado com o ID: " + id);
+	            LogZoologico.registrarMovimentacao("Tentativa de editar animal com ID inexistente: " + id);
+	        }
+	    }
 
-		animalExistente.setNome(novoNome);
-		animalExistente.setEspecie(novaEspecie);
-		animalExistente.setDataNascimento(novaDataNascimento);
+	    String novoNome = lerString("novo nome");
+	    String novaEspecie = lerString("nova espécie");
+	    String novaDataNascimento = lerDataNascimento();
 
-		Comportamento comportamento = inserirComportamentos();
-		animalExistente.setComportamento(comportamento);
+	    animalExistente.setNome(novoNome);
+	    animalExistente.setEspecie(novaEspecie);
+	    animalExistente.setDataNascimento(novaDataNascimento);
 
-		try {
-			fachada.editar(animalExistente);
-			System.out.println("Animal editado com sucesso!");
-			LogZoologico.registrarMovimentacao(String.format("Animal editado com sucesso. ID: %d, Novo Nome: %s, Nova Espécie: %s", animalExistente.getId(), novoNome, novaEspecie));
-		} catch (ExcecaoNegocio e) {
-			System.out.println("Erro ao editar animal com o id " + animalExistente.getId());
-			LogZoologico.registrarMovimentacao("Erro ao editar animal com ID: " + animalExistente.getId() + " - " + e.getMessage());
-		}
+	    Comportamento comportamento = inserirComportamentos();
+	    animalExistente.setComportamento(comportamento);
+
+	    try {
+	        fachada.editar(animalExistente);
+	        System.out.println("Animal editado com sucesso!");
+	        LogZoologico.registrarMovimentacao(String.format("Animal editado com sucesso. ID: %d, Novo Nome: %s, Nova Espécie: %s", animalExistente.getId(), novoNome, novaEspecie));
+	    } catch (ExcecaoNegocio e) {
+	        System.out.println("Erro ao editar animal com o id " + animalExistente.getId());
+	        LogZoologico.registrarMovimentacao("Erro ao editar animal com ID: " + animalExistente.getId() + " - " + e.getMessage());
+	    }
 	}
+
 
 	private void removerAnimal() {
 		System.out.println("Remoção de Animal");
