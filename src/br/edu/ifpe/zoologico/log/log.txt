@@ -72,3 +72,9 @@
 2024-08-12 09:48:18 - Finalização da adição de comportamentos.
 2024-08-12 09:48:18 - Animal editado com sucesso. ID: 1, Novo Nome: flavio, Nova Espécie: veado
 2024-08-12 09:48:21 - Consulta de todos os animais realizada com sucesso.
+2024-08-13 10:00:34 - Finalização da adição de comportamentos.
+2024-08-13 10:00:34 - Animal cadastrado com sucesso. ID: 1, Nome: bob, Espécie: cachorro
+2024-08-13 10:00:45 - Erro ao consultar animal com ID: 2 - null
+2024-08-13 10:01:47 - Finalização da adição de comportamentos.
+2024-08-13 10:01:47 - Animal editado com sucesso. ID: 1, Novo Nome: bob, Nova Espécie: gato
+2024-08-13 10:01:57 - Consulta de todos os animais realizada com sucesso.

@@ -277,23 +277,30 @@ public class TelaAnimal {
 	}
 
 	private String lerDataNascimento() {
-		String data = null;
-		boolean valido = false;
+	    String data = null;
+	    boolean valido = false;
 
-		while (!valido) {
-			System.out.println("Digite a data de nascimento (no formato Ano-Mês-Dia): ");
-			String input = scanner.nextLine();
+	    while (!valido) {
+	        System.out.println("Digite a data de nascimento (no formato Ano-Mês-Dia): ");
+	        String input = scanner.nextLine();
 
-			try {
-				LocalDate.parse(input);
-				data = input;
-				valido = true;
-			} catch (Exception ex) {
-				System.out.println("Data inválida! Use o formato Ano-Mês-Dia (por exemplo, 2020-01-31).");
-			}
-		}
-		return data;
+	        try {
+	            LocalDate dataNascimento = LocalDate.parse(input);
+	            int anoAtual = LocalDate.now().getYear();
+
+	            if (dataNascimento.getYear() > anoAtual) {
+	                System.out.println("O ano de nascimento não pode ser maior que o ano atual.");
+	            } else {
+	                data = input;
+	                valido = true;
+	            }
+	        } catch (Exception ex) {
+	            System.out.println("Data inválida! Use o formato Ano-Mês-Dia (por exemplo, 2020-01-31).");
+	        }
+	    }
+	    return data;
 	}
+
 
 	private Comportamento inserirComportamentos() {
 		Comportamento comportamento = null;
