@@ -78,3 +78,38 @@
 2024-08-13 10:01:47 - Finalização da adição de comportamentos.
 2024-08-13 10:01:47 - Animal editado com sucesso. ID: 1, Novo Nome: bob, Nova Espécie: gato
 2024-08-13 10:01:57 - Consulta de todos os animais realizada com sucesso.
+2024-08-16 19:36:20 - Finalização da adição de comportamentos.
+2024-08-16 19:36:20 - Animal cadastrado com sucesso. ID: 1, Nome: bob, Espécie: cachorro
+2024-08-16 19:36:51 - Erro ao consultar animal com ID: 2 - null
+2024-08-16 19:37:09 - Consulta de animal com sucesso. ID: 1
+2024-08-16 19:53:14 - Finalização da adição de comportamentos.
+2024-08-16 19:53:14 - Animal cadastrado com sucesso. ID: 1, Nome: flavio, Espécie: anta
+2024-08-16 19:53:24 - Consulta de todos os animais realizada com sucesso.
+2024-08-16 19:57:35 - Tentativa de cadastrar um animal com tipo inválido: 7
+2024-08-16 19:57:42 - Tentativa de cadastrar um animal com tipo inválido: 213131
+2024-08-16 19:58:07 - Finalização da adição de comportamentos.
+2024-08-16 19:58:07 - Animal cadastrado com sucesso. ID: 2, Nome: nielson, Espécie: veado
+2024-08-16 19:58:49 - Finalização da adição de comportamentos.
+2024-08-16 19:58:49 - Animal cadastrado com sucesso. ID: 3, Nome: lucas, Espécie: leoa
+2024-08-16 19:59:00 - Consulta de todos os animais realizada com sucesso.
+2024-08-16 19:59:13 - Erro ao consultar animal com ID: 4 - null
+2024-08-16 19:59:15 - Erro ao consultar animal com ID: 5 - null
+2024-08-16 20:00:13 - Finalização da adição de comportamentos.
+2024-08-16 20:00:13 - Animal editado com sucesso. ID: 2, Novo Nome: nielsonn, Nova Espécie: veado
+2024-08-16 20:00:17 - Consulta de todos os animais realizada com sucesso.
+2024-08-16 20:01:14 - Finalização da adição de comportamentos.
+2024-08-16 20:01:14 - Animal editado com sucesso. ID: 3, Novo Nome: lucass, Nova Espécie: anta
+2024-08-16 20:01:59 - Consulta de todos os animais realizada com sucesso.
+2024-08-16 20:02:20 - Erro ao consultar animal com ID: 4 - null
+2024-08-16 20:02:29 - Consulta de animal com sucesso. ID: 1
+2024-08-16 20:02:40 - Consulta de animal com sucesso. ID: 3
+2024-08-16 20:02:48 - Erro ao remover animal com ID: 4 - null
+2024-08-16 20:03:09 - Animal removido com sucesso. ID: 2
+2024-08-16 20:03:17 - Erro ao remover animal com ID: 5 - null
+2024-08-16 20:03:30 - Erro ao consultar animal com ID: 2 - null
+2024-08-16 20:03:35 - Consulta de todos os animais realizada com sucesso.
+2024-08-16 20:04:46 - Finalização da adição de comportamentos.
+2024-08-16 20:04:46 - Animal cadastrado com sucesso. ID: 4, Nome: ericlecio, Espécie: cachorro
+2024-08-16 20:05:01 - Consulta de todos os animais realizada com sucesso.
+2024-08-16 20:05:47 - Consulta de todos os animais realizada com sucesso.
+2024-08-16 20:05:51 - Usuário saiu do sistema.

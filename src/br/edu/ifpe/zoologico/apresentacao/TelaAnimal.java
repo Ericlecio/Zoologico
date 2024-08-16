@@ -290,6 +290,8 @@ public class TelaAnimal {
 
 	            if (dataNascimento.getYear() > anoAtual) {
 	                System.out.println("O ano de nascimento não pode ser maior que o ano atual.");
+	            } else if (dataNascimento.isAfter(LocalDate.now())) {
+	                System.out.println("A data de nascimento não pode ser no futuro.");
 	            } else {
 	                data = input;
 	                valido = true;
@@ -300,6 +302,7 @@ public class TelaAnimal {
 	    }
 	    return data;
 	}
+
 
 
 	private Comportamento inserirComportamentos() {
