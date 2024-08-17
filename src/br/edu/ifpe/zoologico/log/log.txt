@@ -113,3 +113,11 @@
 2024-08-16 20:05:01 - Consulta de todos os animais realizada com sucesso.
 2024-08-16 20:05:47 - Consulta de todos os animais realizada com sucesso.
 2024-08-16 20:05:51 - Usuário saiu do sistema.
+2024-08-17 18:57:57 - Finalização da adição de comportamentos.
+2024-08-17 18:57:57 - Animal cadastrado com sucesso. ID: 1, Nome: bob, Espécie: cachorro
+2024-08-17 18:58:01 - Consulta de todos os animais realizada com sucesso.
+2024-08-17 18:58:14 - Erro ao consultar animal com ID: 3 - null
+2024-08-17 18:58:16 - Erro ao consultar animal com ID: 2 - null
+2024-08-17 18:58:48 - Finalização da adição de comportamentos.
+2024-08-17 18:58:48 - Animal editado com sucesso. ID: 1, Novo Nome: bob, Nova Espécie: gato
+2024-08-17 18:58:50 - Consulta de todos os animais realizada com sucesso.
