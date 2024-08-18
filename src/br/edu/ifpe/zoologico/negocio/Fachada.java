@@ -5,10 +5,10 @@ import br.edu.ifpe.zoologico.entidades.Animal;
 import br.edu.ifpe.zoologico.excecoes.ExcecaoNegocio;
 
 public class Fachada  {
-	private ControladorAnimal controladorAnimal;
+	private IControladorAnimal controladorAnimal;
 
 	public Fachada() {
-		this.controladorAnimal = new ControladorAnimal();
+		controladorAnimal = FabricaControlador.getControladorAnimal();
 	}
 
 	public void cadastrarAnimal(Animal animal) throws ExcecaoNegocio {

@@ -121,3 +121,8 @@
 2024-08-17 18:58:48 - Finalização da adição de comportamentos.
 2024-08-17 18:58:48 - Animal editado com sucesso. ID: 1, Novo Nome: bob, Nova Espécie: gato
 2024-08-17 18:58:50 - Consulta de todos os animais realizada com sucesso.
+2024-08-17 20:30:00 - Nenhum animal cadastrado encontrado na consulta de todos os animais.
+2024-08-17 20:30:11 - Erro ao consultar animal com ID: 1 - null
+2024-08-18 10:34:57 - Finalização da adição de comportamentos.
+2024-08-18 10:34:57 - Animal cadastrado com sucesso. ID: 1, Nome: bob, Espécie: cachorro
+2024-08-18 10:35:03 - Consulta de todos os animais realizada com sucesso.
