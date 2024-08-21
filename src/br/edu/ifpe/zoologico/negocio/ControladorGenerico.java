@@ -5,6 +5,7 @@ import br.edu.ifpe.zoologico.persistencia.GenericDao;
 
 import java.util.List;
 
+import br.edu.ifpe.zoologico.entidades.Zoologico;
 import br.edu.ifpe.zoologico.excecoes.ExcecaoNegocio;
 
 public abstract class ControladorGenerico<T> {
@@ -36,4 +37,6 @@ public abstract class ControladorGenerico<T> {
 	protected GenericDao<T> getDao() {
 		return dao;
 	}
+
+	
 }

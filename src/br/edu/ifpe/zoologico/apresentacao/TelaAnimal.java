@@ -3,7 +3,7 @@ package br.edu.ifpe.zoologico.apresentacao;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
-
+import br.edu.ifpe.zoologico.entidades.Zoologico;
 import br.edu.ifpe.zoologico.log.LogZoologico;
 import br.edu.ifpe.zoologico.entidades.*;
 import br.edu.ifpe.zoologico.excecoes.ExcecaoNegocio;
@@ -34,7 +34,9 @@ public class TelaAnimal {
 			System.out.println("3. Remover um animal");
 			System.out.println("4. Consultar um animal específico");
 			System.out.println("5. Consultar todos os animais");
-			System.out.println("6. Sair");
+			System.out.println("6. Inserir um zoológico");
+			System.out.println("7. Remover um zoológico");
+			System.out.println("8. Sair");
 			System.out.println("=============================================");
 
 			opcao = lerInteiro("uma opção");
@@ -56,6 +58,12 @@ public class TelaAnimal {
 				consultarTodosAnimais();
 				break;
 			case 6:
+				inserirZoologico();
+				break;
+			case 7:
+				removerZoologico();
+				break;
+			case 8:
 				System.out.println("\nSaindo do sistema... Até mais!");
 				LogZoologico.registrarMovimentacao("Usuário saiu do sistema.");
 				break;
@@ -63,100 +71,100 @@ public class TelaAnimal {
 				System.out.println("\n[ERRO] Opção inválida! Digite um número entre 1 e 6.");
 				break;
 			}
-		} while (opcao != 6);
+		} while (opcao != 8);
 	}
 
 	private void cadastrarAnimal() {
-	    System.out.println("Cadastro de Animal");
-	    String nome = lerString("nome");
-	    String especie = lerString("espécie");
-	    String dataNascimento = lerDataNascimento();
-	    
-	    int tipoAnimal = 0;
-	    boolean tipoAnimalValido = false;
-	    
-	    while (!tipoAnimalValido) {
-	        tipoAnimal = lerInteiro("tipo de animal (1-Mamífero, 2-Ave, 3-Réptil)");
-	        
-	        if (tipoAnimal < 1 || tipoAnimal > 3) {
-	            System.out.println("Tipo de animal inválido. Por favor, tente novamente.");
-	            LogZoologico.registrarMovimentacao(String.format("Tentativa de cadastrar um animal com tipo inválido: %d", tipoAnimal));
-	        } else {
-	            tipoAnimalValido = true;
-	        }
-	    }
+		System.out.println("Cadastro de Animal");
+		String nome = lerString("nome");
+		String especie = lerString("espécie");
+		String dataNascimento = lerDataNascimento();
 
-	    Animal animal;
-	    switch (tipoAnimal) {
-	        case 1:
-	            animal = new AnimalMamifero(nome, especie, dataNascimento);
-	            break;
-	        case 2:
-	            animal = new AnimalAve(nome, especie, dataNascimento);
-	            break;
-	        case 3:
-	            animal = new AnimalReptil(nome, especie, dataNascimento);
-	            break;
-	        default:
-	            return;
-	    }
+		int tipoAnimal = 0;
+		boolean tipoAnimalValido = false;
 
-	    Comportamento comportamento = inserirComportamentos();
-	    animal.setComportamento(comportamento);
+		while (!tipoAnimalValido) {
+			tipoAnimal = lerInteiro("tipo de animal (1-Mamífero, 2-Ave, 3-Réptil)");
 
-	    try {
-	        fachada.cadastrarAnimal(animal);
-	        System.out.println("Animal cadastrado com sucesso! ID: " + animal.getId());
-	        LogZoologico.registrarMovimentacao(String.format("Animal cadastrado com sucesso. ID: %d, Nome: %s, Espécie: %s", animal.getId(), animal.getNome(), animal.getEspecie()));
-	    } catch (ExcecaoNegocio excecao) {
-	        System.out.println("Erro ao cadastrar animal: " + excecao.getMessage());
-	        LogZoologico.registrarMovimentacao("Erro ao cadastrar animal: " + excecao.getMessage());
-	    }
+			if (tipoAnimal < 1 || tipoAnimal > 3) {
+				System.out.println("Tipo de animal inválido. Por favor, tente novamente.");
+				LogZoologico.registrarMovimentacao(String.format("Tentativa de cadastrar um animal com tipo inválido: %d", tipoAnimal));
+			} else {
+				tipoAnimalValido = true;
+			}
+		}
+
+		Animal animal;
+		switch (tipoAnimal) {
+		case 1:
+			animal = new AnimalMamifero(nome, especie, dataNascimento);
+			break;
+		case 2:
+			animal = new AnimalAve(nome, especie, dataNascimento);
+			break;
+		case 3:
+			animal = new AnimalReptil(nome, especie, dataNascimento);
+			break;
+		default:
+			return;
+		}
+
+		Comportamento comportamento = inserirComportamentos();
+		animal.setComportamento(comportamento);
+
+		try {
+			fachada.cadastrarAnimal(animal);
+			System.out.println("Animal cadastrado com sucesso! ID: " + animal.getId());
+			LogZoologico.registrarMovimentacao(String.format("Animal cadastrado com sucesso. ID: %d, Nome: %s, Espécie: %s", animal.getId(), animal.getNome(), animal.getEspecie()));
+		} catch (ExcecaoNegocio excecao) {
+			System.out.println("Erro ao cadastrar animal: " + excecao.getMessage());
+			LogZoologico.registrarMovimentacao("Erro ao cadastrar animal: " + excecao.getMessage());
+		}
 	}
 
 
 	private void editarAnimal() {
-	    System.out.println("Edição de Animal");
+		System.out.println("Edição de Animal");
 
-	    Animal animalExistente = null;
-	    int id = -1;
+		Animal animalExistente = null;
+		int id = -1;
 
-	    while (animalExistente == null) {
-	        id = lerInteiro("ID do animal");
+		while (animalExistente == null) {
+			id = lerInteiro("ID do animal");
 
-	        try {
-	            animalExistente = fachada.consultarPorId(id);
-	        } catch (ExcecaoNegocio e) {
-	            System.out.println("Erro ao consultar animal: " + e.getMessage());
-	            LogZoologico.registrarMovimentacao("Erro ao consultar animal com ID: " + id + " - " + e.getMessage());
-	            continue;
-	        }
+			try {
+				animalExistente = fachada.consultarPorId(id);
+			} catch (ExcecaoNegocio e) {
+				System.out.println("Erro ao consultar animal: " + e.getMessage());
+				LogZoologico.registrarMovimentacao("Erro ao consultar animal com ID: " + id + " - " + e.getMessage());
+				continue;
+			}
 
-	        if (animalExistente == null) {
-	            System.out.println("Animal não encontrado com o ID: " + id);
-	            LogZoologico.registrarMovimentacao("Tentativa de editar animal com ID inexistente: " + id);
-	        }
-	    }
+			if (animalExistente == null) {
+				System.out.println("Animal não encontrado com o ID: " + id);
+				LogZoologico.registrarMovimentacao("Tentativa de editar animal com ID inexistente: " + id);
+			}
+		}
 
-	    String novoNome = lerString("novo nome");
-	    String novaEspecie = lerString("nova espécie");
-	    String novaDataNascimento = lerDataNascimento();
+		String novoNome = lerString("novo nome");
+		String novaEspecie = lerString("nova espécie");
+		String novaDataNascimento = lerDataNascimento();
 
-	    animalExistente.setNome(novoNome);
-	    animalExistente.setEspecie(novaEspecie);
-	    animalExistente.setDataNascimento(novaDataNascimento);
+		animalExistente.setNome(novoNome);
+		animalExistente.setEspecie(novaEspecie);
+		animalExistente.setDataNascimento(novaDataNascimento);
 
-	    Comportamento comportamento = inserirComportamentos();
-	    animalExistente.setComportamento(comportamento);
+		Comportamento comportamento = inserirComportamentos();
+		animalExistente.setComportamento(comportamento);
 
-	    try {
-	        fachada.editar(animalExistente);
-	        System.out.println("Animal editado com sucesso!");
-	        LogZoologico.registrarMovimentacao(String.format("Animal editado com sucesso. ID: %d, Novo Nome: %s, Nova Espécie: %s", animalExistente.getId(), novoNome, novaEspecie));
-	    } catch (ExcecaoNegocio e) {
-	        System.out.println("Erro ao editar animal com o id " + animalExistente.getId());
-	        LogZoologico.registrarMovimentacao("Erro ao editar animal com ID: " + animalExistente.getId() + " - " + e.getMessage());
-	    }
+		try {
+			fachada.editar(animalExistente);
+			System.out.println("Animal editado com sucesso!");
+			LogZoologico.registrarMovimentacao(String.format("Animal editado com sucesso. ID: %d, Novo Nome: %s, Nova Espécie: %s", animalExistente.getId(), novoNome, novaEspecie));
+		} catch (ExcecaoNegocio e) {
+			System.out.println("Erro ao editar animal com o id " + animalExistente.getId());
+			LogZoologico.registrarMovimentacao("Erro ao editar animal com ID: " + animalExistente.getId() + " - " + e.getMessage());
+		}
 	}
 
 
@@ -277,30 +285,30 @@ public class TelaAnimal {
 	}
 
 	private String lerDataNascimento() {
-	    String data = null;
-	    boolean valido = false;
+		String data = null;
+		boolean valido = false;
 
-	    while (!valido) {
-	        System.out.println("Digite a data de nascimento (no formato Ano-Mês-Dia): ");
-	        String input = scanner.nextLine();
+		while (!valido) {
+			System.out.println("Digite a data de nascimento (no formato Ano-Mês-Dia): ");
+			String input = scanner.nextLine();
 
-	        try {
-	            LocalDate dataNascimento = LocalDate.parse(input);
-	            int anoAtual = LocalDate.now().getYear();
+			try {
+				LocalDate dataNascimento = LocalDate.parse(input);
+				int anoAtual = LocalDate.now().getYear();
 
-	            if (dataNascimento.getYear() > anoAtual) {
-	                System.out.println("O ano de nascimento não pode ser maior que o ano atual.");
-	            } else if (dataNascimento.isAfter(LocalDate.now())) {
-	                System.out.println("A data de nascimento não pode ser no futuro.");
-	            } else {
-	                data = input;
-	                valido = true;
-	            }
-	        } catch (Exception ex) {
-	            System.out.println("Data inválida! Use o formato Ano-Mês-Dia (por exemplo, 2020-01-31).");
-	        }
-	    }
-	    return data;
+				if (dataNascimento.getYear() > anoAtual) {
+					System.out.println("O ano de nascimento não pode ser maior que o ano atual.");
+				} else if (dataNascimento.isAfter(LocalDate.now())) {
+					System.out.println("A data de nascimento não pode ser no futuro.");
+				} else {
+					data = input;
+					valido = true;
+				}
+			} catch (Exception ex) {
+				System.out.println("Data inválida! Use o formato Ano-Mês-Dia (por exemplo, 2020-01-31).");
+			}
+		}
+		return data;
 	}
 
 
@@ -344,5 +352,73 @@ public class TelaAnimal {
 				break;
 			}
 		}
+	}
+
+	private void inserirZoologico() {
+		System.out.println("Inserção de Zoológico");
+		String nome = lerString("nome do zoológico");
+		String endereco = lerString("endereço do zoológico");
+
+		Zoologico zoologico = new Zoologico();
+		zoologico.setNome(nome);
+		zoologico.setEndereco(endereco);
+
+		try {
+			fachada.inserirZoologico(zoologico);
+			System.out.println("Zoológico inserido com sucesso! ID: " + zoologico.getId());
+			LogZoologico.registrarMovimentacao("Zoológico inserido com sucesso. ID: " + zoologico.getId());
+		} catch (ExcecaoNegocio e) {
+			System.out.println("[ERRO] " + e.getMessage());
+			LogZoologico.registrarMovimentacao("Erro ao inserir zoológico: " + e.getMessage());
+		}
+	}
+
+	private void removerZoologico() {
+		System.out.println("Remoção de Zoológico");
+		int id = lerInteiro("ID do zoológico");
+
+		try {
+			fachada.removerZoologico(id);
+			System.out.println("Zoológico removido com sucesso!");
+			LogZoologico.registrarMovimentacao("Zoológico removido com sucesso. ID: " + id);
+		} catch (ExcecaoNegocio e) {
+			System.out.println("[ERRO] " + e.getMessage());
+			LogZoologico.registrarMovimentacao("Erro ao remover zoológico: " + e.getMessage());
+		}
+	}
+
+	private int lerInteiro1(String mensagem) {
+		int entrada = 0;
+		boolean valido = false;
+
+		while (!valido) {
+			System.out.println("Digite o " + mensagem + ": ");
+			String input = scanner.nextLine();
+
+			try {
+				entrada = Integer.parseInt(input);
+				valido = true;
+			} catch (NumberFormatException ex) {
+				System.out.println("Entrada inválida! Digite apenas números inteiros.");
+			}
+		}
+		return entrada;
+	}
+
+	private String lerString1(String nomeAtributo) {
+		String entrada = "";
+
+		while (entrada.trim().isEmpty() || !isStringValida(entrada)) {
+			System.out.println("Digite o " + nomeAtributo + ": ");
+			entrada = scanner.nextLine();
+			if (!isStringValida(entrada)) {
+				System.out.println("Entrada inválida! O " + nomeAtributo + " deve conter apenas letras e espaços.");
+			}
+		}
+		return entrada;
+	}
+
+	private boolean isStringValida1(String entrada) {
+		return entrada.matches("[a-zA-Z\\s]+");
 	}
 }
