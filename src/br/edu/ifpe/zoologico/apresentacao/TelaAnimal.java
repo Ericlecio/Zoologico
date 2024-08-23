@@ -8,6 +8,7 @@ import br.edu.ifpe.zoologico.log.LogZoologico;
 import br.edu.ifpe.zoologico.entidades.*;
 import br.edu.ifpe.zoologico.excecoes.ExcecaoNegocio;
 import br.edu.ifpe.zoologico.negocio.Fachada;
+import br.edu.ifpe.zoologico.negocio.FachadaZoologico;
 import br.edu.ifpe.zoologico.util.AdapterDataNascimento;
 import br.edu.ifpe.zoologico.util.DataNascimento;
 
@@ -16,11 +17,12 @@ public class TelaAnimal {
 	private Scanner scanner;
 	private AdapterDataNascimento dataNascimentoAdapter;
 	private Fachada fachada;
-
+	
+	;
 	public TelaAnimal() {
 		this.scanner = new Scanner(System.in);
 		this.dataNascimentoAdapter = new DataNascimento();
-		this.fachada = new Fachada();
+	
 	}
 
 	public void exibir() {
@@ -34,9 +36,8 @@ public class TelaAnimal {
 			System.out.println("3. Remover um animal");
 			System.out.println("4. Consultar um animal específico");
 			System.out.println("5. Consultar todos os animais");
-			System.out.println("6. Inserir um zoológico");
-			System.out.println("7. Remover um zoológico");
-			System.out.println("8. Sair");
+			System.out.println("6. Acessar Tela Zoologico ");
+			System.out.println("0. Sair");
 			System.out.println("=============================================");
 
 			opcao = lerInteiro("uma opção");
@@ -58,12 +59,9 @@ public class TelaAnimal {
 				consultarTodosAnimais();
 				break;
 			case 6:
-				inserirZoologico();
+				acessarTelaZoologico();
 				break;
-			case 7:
-				removerZoologico();
-				break;
-			case 8:
+			case 0:
 				System.out.println("\nSaindo do sistema... Até mais!");
 				LogZoologico.registrarMovimentacao("Usuário saiu do sistema.");
 				break;
@@ -71,14 +69,24 @@ public class TelaAnimal {
 				System.out.println("\n[ERRO] Opção inválida! Digite um número entre 1 e 6.");
 				break;
 			}
-		} while (opcao != 8);
+		} while (opcao != 7);
+		
 	}
-
+	 private void acessarTelaZoologico() {
+	        TelaZoologico telaZoologico = new TelaZoologico();
+	        telaZoologico.exibir();
+	    }
 	private void cadastrarAnimal() {
 		System.out.println("Cadastro de Animal");
 		String nome = lerString("nome");
 		String especie = lerString("espécie");
 		String dataNascimento = lerDataNascimento();
+		
+		Zoologico zoologico = selecionarZoologico(); // Chama o método para selecionar o zoológico
+	    if (zoologico == null) {
+	        System.out.println("Nenhum zoológico selecionado. Operação cancelada.");
+	        return; // Cancela a operação se o zoológico não for selecionado
+	    }
 
 		int tipoAnimal = 0;
 		boolean tipoAnimalValido = false;
@@ -119,8 +127,31 @@ public class TelaAnimal {
 		} catch (ExcecaoNegocio excecao) {
 			System.out.println("Erro ao cadastrar animal: " + excecao.getMessage());
 			LogZoologico.registrarMovimentacao("Erro ao cadastrar animal: " + excecao.getMessage());
+			
 		}
 	}
+	
+	
+	private Zoologico selecionarZoologico() {
+	    System.out.println("Escolha um zoológico para o animal:");
+	    try {
+	        FachadaZoologico fachadaZoologico = new FachadaZoologico(); 
+	        List<Zoologico> zoologicos = fachadaZoologico.listarTodosZoologicos(); 
+	        for (Zoologico z : zoologicos) {
+	            System.out.println(z.getId() + ". " + z.getNome()); 
+	        }
+	        System.out.print("Digite o ID do zoológico: ");
+	        int idZoologico = scanner.nextInt();
+	        scanner.nextLine(); 
+
+	        return fachadaZoologico.consultarPorId(idZoologico); 
+	    } catch (ExcecaoNegocio e) {
+	        System.out.println("Erro ao listar zoológicos: " + e.getMessage());
+	        return null;
+	    }
+	}
+
+
 
 
 	private void editarAnimal() {
@@ -354,71 +385,5 @@ public class TelaAnimal {
 		}
 	}
 
-	private void inserirZoologico() {
-		System.out.println("Inserção de Zoológico");
-		String nome = lerString("nome do zoológico");
-		String endereco = lerString("endereço do zoológico");
 
-		Zoologico zoologico = new Zoologico();
-		zoologico.setNome(nome);
-		zoologico.setEndereco(endereco);
-
-		try {
-			fachada.inserirZoologico(zoologico);
-			System.out.println("Zoológico inserido com sucesso! ID: " + zoologico.getId());
-			LogZoologico.registrarMovimentacao("Zoológico inserido com sucesso. ID: " + zoologico.getId());
-		} catch (ExcecaoNegocio e) {
-			System.out.println("[ERRO] " + e.getMessage());
-			LogZoologico.registrarMovimentacao("Erro ao inserir zoológico: " + e.getMessage());
-		}
-	}
-
-	private void removerZoologico() {
-		System.out.println("Remoção de Zoológico");
-		int id = lerInteiro("ID do zoológico");
-
-		try {
-			fachada.removerZoologico(id);
-			System.out.println("Zoológico removido com sucesso!");
-			LogZoologico.registrarMovimentacao("Zoológico removido com sucesso. ID: " + id);
-		} catch (ExcecaoNegocio e) {
-			System.out.println("[ERRO] " + e.getMessage());
-			LogZoologico.registrarMovimentacao("Erro ao remover zoológico: " + e.getMessage());
-		}
-	}
-
-	private int lerInteiro1(String mensagem) {
-		int entrada = 0;
-		boolean valido = false;
-
-		while (!valido) {
-			System.out.println("Digite o " + mensagem + ": ");
-			String input = scanner.nextLine();
-
-			try {
-				entrada = Integer.parseInt(input);
-				valido = true;
-			} catch (NumberFormatException ex) {
-				System.out.println("Entrada inválida! Digite apenas números inteiros.");
-			}
-		}
-		return entrada;
-	}
-
-	private String lerString1(String nomeAtributo) {
-		String entrada = "";
-
-		while (entrada.trim().isEmpty() || !isStringValida(entrada)) {
-			System.out.println("Digite o " + nomeAtributo + ": ");
-			entrada = scanner.nextLine();
-			if (!isStringValida(entrada)) {
-				System.out.println("Entrada inválida! O " + nomeAtributo + " deve conter apenas letras e espaços.");
-			}
-		}
-		return entrada;
-	}
-
-	private boolean isStringValida1(String entrada) {
-		return entrada.matches("[a-zA-Z\\s]+");
-	}
 }

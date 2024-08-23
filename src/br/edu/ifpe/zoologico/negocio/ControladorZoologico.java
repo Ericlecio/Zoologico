@@ -26,7 +26,6 @@ public class ControladorZoologico extends ControladorGenerico<Zoologico> impleme
     }
 
     private boolean isValido(Zoologico zoologico) {
-      
         return true;
     }
 }

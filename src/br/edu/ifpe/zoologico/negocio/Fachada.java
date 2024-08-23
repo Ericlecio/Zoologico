@@ -2,16 +2,13 @@ package br.edu.ifpe.zoologico.negocio;
 
 import java.util.List;
 import br.edu.ifpe.zoologico.entidades.Animal;
-import br.edu.ifpe.zoologico.entidades.Zoologico;
 import br.edu.ifpe.zoologico.excecoes.ExcecaoNegocio;
 
 public class Fachada  {
 	private IControladorAnimal controladorAnimal;
-	private IControladorZoologico controladorZoologico;
 
 	public Fachada() {
 		controladorAnimal = FabricaControlador.getControladorAnimal();
-		controladorZoologico = FabricaControlador.getControladorZoologico();
 	}
 
 	public void cadastrarAnimal(Animal animal) throws ExcecaoNegocio {
@@ -33,16 +30,4 @@ public class Fachada  {
 	public List<Animal> consultarTodos() throws ExcecaoNegocio {
 		return controladorAnimal.consultarTodos();
 	}
-
-	public void inserirZoologico(Zoologico zoologico) throws ExcecaoNegocio {
-		return controladorZoologico.inserir(zoologico);
-
-	}
-
-	public void removerZoologico(int id) throws ExcecaoNegocio {
-		return controladorZoologico.remover(id); 
-
-
-	}
 }
-
