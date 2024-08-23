@@ -82,10 +82,10 @@ public class TelaAnimal {
 		String especie = lerString("espécie");
 		String dataNascimento = lerDataNascimento();
 		
-		Zoologico zoologico = selecionarZoologico(); // Chama o método para selecionar o zoológico
+		Zoologico zoologico = selecionarZoologico(); 
 	    if (zoologico == null) {
 	        System.out.println("Nenhum zoológico selecionado. Operação cancelada.");
-	        return; // Cancela a operação se o zoológico não for selecionado
+	        return;
 	    }
 
 		int tipoAnimal = 0;

@@ -24,9 +24,7 @@ public class TelaZoologico {
             System.out.println("==== Tela Zoológico ====");
             System.out.println("1. Adicionar Zoológico");
             System.out.println("2. Remover Zoológico");
-            System.out.println("3. Consultar Zoológico por ID");
-            System.out.println("4. Listar Todos os Zoológicos");
-            System.out.println("0. Voltar");
+            System.out.println("3. Voltar");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
             scanner.nextLine(); 
@@ -39,18 +37,12 @@ public class TelaZoologico {
                     removerZoologico();
                     break;
                 case 3:
-                    consultarZoologico();
-                    break;
-                case 4:
-                    listarTodosZoologicos();
-                    break;
-                case 0:
                     System.out.println("Voltando...");
                     break;
                 default:
                     System.out.println("Opção inválida!");
             }
-        } while (opcao != 0);
+        } while (opcao != 3);
     }
 
     private void adicionarZoologico() {
@@ -84,59 +76,5 @@ public class TelaZoologico {
             System.out.println("Erro ao remover zoológico: " + e.getMessage());
         }
     }
-
-    private void consultarZoologico() {
-        System.out.print("Digite o ID do zoológico a ser consultado: ");
-        int id = lerInteiro("ID do zoologico: ");
-
-        try {
-            Zoologico zoologico = fachada.consultarPorId(id);
-            if (zoologico != null) {
-            	exibirInformacoesZoologico(zoologico);
-				LogZoologico.registrarMovimentacao(String.format("Consulta de zoologico com sucesso. ID: %d", id));
-			} else {
-				System.out.println("Zoológico não encontrado.");
-				LogZoologico.registrarMovimentacao("Zoológico não encontrado com ID: " + id);
-			}
-        } catch (ExcecaoNegocio e) {
-            System.out.println("Erro ao consultar zoológico: " + e.getMessage());
-            LogZoologico.registrarMovimentacao("Erro ao consultar zoologico com ID: " + id + " - " + e.getMessage());
-        }
-    }
-
-    private void listarTodosZoologicos() {
-        try {
-            List<Zoologico> zoologicos = fachada.listarTodosZoologicos();
-            System.out.println("Lista de Zoológicos:");
-            for (Zoologico zoologico : zoologicos) {
-                exibirInformacoesZoologico(zoologico);
-            }
-        } catch (ExcecaoNegocio e) {
-            System.out.println("Erro ao listar zoológicos: " + e.getMessage());
-        }
-    }
-    
-    
-    private void exibirInformacoesZoologico(Zoologico zoologico) {
-		System.out.println("ID: " + zoologico.getId());
-		System.out.println("Nome: " + zoologico.getNome());
-		System.out.println("Endereço: " + zoologico.getEndereco());
-	}
-    private int lerInteiro(String mensagem) {
-		int entrada = 0;
-		boolean valido = false;
-
-		while (!valido) {
-			System.out.println("Digite o " + mensagem + ": ");
-			String input = scanner.nextLine();
-
-			try {
-				entrada = Integer.parseInt(input);
-				valido = true;
-			} catch (NumberFormatException ex) {
-				System.out.println("Entrada inválida! Digite apenas números inteiros.");
-			}
-		}
-		return entrada;
-	}
+   
 }
