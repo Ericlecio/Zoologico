@@ -17,14 +17,6 @@ public class ControladorZoologico extends ControladorGenerico<Zoologico> impleme
         getDao().inserir(zoologico);
     }
 
-    @Override
-    public void editar(Zoologico zoologico) throws ExcecaoNegocio {
-        if (!isValido(zoologico)) {
-            throw new ExcecaoNegocio("Zoológico inválido!");
-        }
-        getDao().editar(zoologico);
-    }
-
     private boolean isValido(Zoologico zoologico) {
         return true;
     }

@@ -139,3 +139,14 @@
 2024-08-23 16:23:17 - Consulta de animal com sucesso. ID: 1
 2024-08-23 16:23:31 - Consulta de todos os animais realizada com sucesso.
 2024-08-23 16:37:19 - Finalização da adição de comportamentos.
+2024-08-23 21:27:31 - Finalização da adição de comportamentos.
+2024-08-23 21:27:31 - Animal cadastrado com sucesso. ID: 1, Nome: , Espécie: afau
+2024-08-23 21:46:08 - Tentativa de cadastrar um animal sem zoológicos cadastrados.
+2024-08-23 21:46:28 - Erro ao consultar animal com ID: 1 - null
+2024-08-23 21:46:39 - Tentativa de cadastrar um animal sem zoológicos cadastrados.
+2024-08-23 21:47:30 - Zoológico adicionado com sucesso. Nome: zoologico dois irmao, Localização: rua tal
+2024-08-23 21:47:52 - Finalização da adição de comportamentos.
+2024-08-23 21:47:52 - Animal cadastrado com sucesso. ID: 2, Nome: bob, Espécie: cachorro
+2024-08-23 21:48:59 - Nenhum animal cadastrado encontrado na consulta de todos os animais.
+2024-08-23 21:49:04 - Tentativa de cadastrar um animal sem zoológicos cadastrados.
+2024-08-23 21:49:19 - Zoológico adicionado com sucesso. Nome: zoologico, Localização: rua tal

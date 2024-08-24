@@ -1,58 +1,91 @@
 package br.edu.ifpe.zoologico.entidades;
 
-public class Zoologico extends EntidadeBase{
-	 private String nome;
-	    private String endereco;
+import java.util.ArrayList;
+import java.util.List;
 
-	    public Zoologico(String nome, String endereco) {
-	        super();
-	        this.nome = nome;
-	        this.endereco = endereco;
-	    }
+public class Zoologico extends EntidadeBase {
+    private String nome;
+    private String endereco;
+    private List<Animal> animais; // Lista de animais
 
-	    public Zoologico() {
-			// TODO Auto-generated constructor stub
-		}
+    // Construtor para inicializar nome, endereco e lista de animais
+    public Zoologico(String nome, String endereco) {
+        super();
+        this.nome = nome;
+        this.endereco = endereco;
+        this.animais = new ArrayList<>(); // Inicializa a lista de animais
+    }
 
-		public String getNome() {
-	        return nome;
-	    }
+    // Construtor padrão
+    public Zoologico() {
+        this.animais = new ArrayList<>(); // Inicializa a lista de animais
+    }
 
-	    public void setNome(String nome) {
-	        this.nome = nome;
-	    }
+    // Getter para a lista de animais
+    public List<Animal> getAnimais() {
+        return animais;
+    }
 
-	    public String getEndereco() {
-	        return endereco;
-	    }
+    // Método para adicionar um animal ao zoológico
+    public void adicionarAnimal(Animal animal) {
+        this.animais.add(animal);
+    }
 
-	    public void setEndereco(String endereco) {
-	        this.endereco = endereco;
-	    }
+    // Método para remover um animal do zoológico
+    public void removerAnimal(Animal animal) {
+        this.animais.remove(animal);
+    }
 
+    // Método para encontrar um animal pelo nome
+    public Animal encontrarAnimalPorNome(String nome) {
+        for (Animal animal : animais) {
+            if (animal.getNome().equalsIgnoreCase(nome)) {
+                return animal;
+            }
+        }
+        return null; // Retorna null se não encontrar
+    }
 
-	    public static class ZoologicoBuilder {
-	        private Integer id;
-	        private String nome;
-	        private String endereco;
+    // Getters e Setters para outros atributos
+    public String getNome() {
+        return nome;
+    }
 
-	        public ZoologicoBuilder id(Integer id) {
-	            this.id = id;
-	            return this;
-	        }
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
-	        public ZoologicoBuilder nome(String nome) {
-	            this.nome = nome;
-	            return this;
-	        }
+    public String getEndereco() {
+        return endereco;
+    }
 
-	        public ZoologicoBuilder endereco(String endereco) {
-	            this.endereco = endereco;
-	            return this;
-	        }
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
+    }
 
-	        public Zoologico criar() {
-				return new Zoologico(nome, endereco);
-	        }
-	    }
+    // Classe interna para Builder
+    public static class ZoologicoBuilder {
+        private Integer id;
+        private String nome;
+        private String endereco;
+
+        public ZoologicoBuilder id(Integer id) {
+            this.id = id;
+            return this;
+        }
+
+        public ZoologicoBuilder nome(String nome) {
+            this.nome = nome;
+            return this;
+        }
+
+        public ZoologicoBuilder endereco(String endereco) {
+            this.endereco = endereco;
+            return this;
+        }
+
+        public Zoologico criar() {
+            return new Zoologico(nome, endereco);
+        }
+    }
 }
