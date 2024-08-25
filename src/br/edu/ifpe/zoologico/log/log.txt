@@ -150,3 +150,61 @@
 2024-08-23 21:48:59 - Nenhum animal cadastrado encontrado na consulta de todos os animais.
 2024-08-23 21:49:04 - Tentativa de cadastrar um animal sem zoológicos cadastrados.
 2024-08-23 21:49:19 - Zoológico adicionado com sucesso. Nome: zoologico, Localização: rua tal
+2024-08-24 18:09:59 - Zoológico adicionado com sucesso. Nome: aaaa, Localização: aaa
+2024-08-24 18:10:27 - Finalização da adição de comportamentos.
+2024-08-24 18:10:27 - Animal cadastrado com sucesso. ID: 2, Nome: bob, Espécie: cachorro
+2024-08-24 18:11:48 - Tentativa de cadastrar um animal sem zoológicos cadastrados.
+2024-08-24 18:11:53 - Zoológico adicionado com sucesso. Nome: aaaa, Localização: aaaa
+2024-08-24 18:12:08 - Finalização da adição de comportamentos.
+2024-08-24 18:12:08 - Animal cadastrado com sucesso. ID: 2, Nome: bob, Espécie: cachorro
+2024-08-24 18:12:14 - Erro ao consultar animal com ID: 1 - null
+2024-08-24 18:12:19 - Consulta de animal com sucesso. ID: 2
+2024-08-24 18:31:02 - Tentativa de cadastrar um animal sem zoológicos cadastrados.
+2024-08-24 18:31:28 - Zoológico cadastrado com sucesso: aaaa
+2024-08-24 18:31:43 - Consulta de todos os zoológicos realizada com sucesso.
+2024-08-24 18:31:59 - Finalização da adição de comportamentos.
+2024-08-24 18:31:59 - Animal cadastrado com sucesso. ID: 2, Nome: bob, Espécie: cachorro
+2024-08-24 18:32:07 - Erro ao consultar animal com ID: 1 - null
+2024-08-24 18:32:13 - Consulta de todos os animais realizada com sucesso.
+2024-08-24 18:32:32 - Consulta de animal com sucesso. ID: 2
+2024-08-24 18:32:54 - Erro ao consultar zoológico com ID: 2 - null
+2024-08-24 18:33:05 - Consulta de zoológico com sucesso. ID: 1
+2024-08-24 18:46:08 - Tentativa de cadastrar um animal sem zoológicos cadastrados.
+2024-08-24 18:46:27 - Erro ao consultar animal com ID: 1 - null
+2024-08-24 18:48:47 - Zoológico cadastrado com sucesso: aaaa
+2024-08-24 18:49:05 - Erro ao consultar zoológico com ID: 2 - null
+2024-08-24 18:49:10 - Consulta de zoológico com sucesso. ID: 1
+2024-08-24 18:49:25 - Consulta de todos os zoológicos realizada com sucesso.
+2024-08-24 18:49:32 - Consulta de todos os zoológicos realizada com sucesso.
+2024-08-24 18:49:42 - Zoológico removido com sucesso. ID: 2
+2024-08-24 18:49:52 - Consulta de todos os zoológicos realizada com sucesso.
+2024-08-24 18:50:08 - Zoológico removido com sucesso. ID: 1
+2024-08-24 18:50:13 - Nenhum zoológico cadastrado encontrado na consulta de todos os zoológicos.
+2024-08-24 18:50:29 - Tentativa de cadastrar um animal sem zoológicos cadastrados.
+2024-08-24 18:50:33 - Zoológico cadastrado com sucesso: aaaa
+2024-08-24 18:50:54 - Finalização da adição de comportamentos.
+2024-08-24 18:50:54 - Animal cadastrado com sucesso. ID: 3, Nome: bob, Espécie: cachorro
+2024-08-24 18:51:15 - Consulta de todos os animais realizada com sucesso.
+2024-08-24 18:51:35 - Erro ao consultar animal com ID: 1 - null
+2024-08-24 18:51:40 - Erro ao consultar animal com ID: 2 - null
+2024-08-24 18:51:44 - Consulta de animal com sucesso. ID: 3
+2024-08-24 18:52:00 - Erro ao remover animal com ID: 1 - null
+2024-08-24 18:52:04 - Animal removido com sucesso. ID: 3
+2024-08-24 18:52:09 - Nenhum animal cadastrado encontrado na consulta de todos os animais.
+2024-08-24 18:53:59 - Tentativa de cadastrar um animal sem zoológicos cadastrados.
+2024-08-24 18:54:41 - Zoológico cadastrado com sucesso: aaaaa
+2024-08-24 18:54:49 - Consulta de todos os zoológicos realizada com sucesso.
+2024-08-24 18:55:04 - Zoológico cadastrado com sucesso: bbb
+2024-08-24 18:55:10 - Consulta de todos os zoológicos realizada com sucesso.
+2024-08-24 18:55:28 - Erro ao consultar zoológico com ID: 3 - null
+2024-08-24 18:55:34 - Consulta de todos os zoológicos realizada com sucesso.
+2024-08-24 18:55:40 - Consulta de zoológico com sucesso. ID: 1
+2024-08-24 18:55:56 - Zoológico removido com sucesso. ID: 3
+2024-08-24 18:56:05 - Consulta de todos os zoológicos realizada com sucesso.
+2024-08-24 18:57:00 - Finalização da adição de comportamentos.
+2024-08-24 18:57:00 - Animal cadastrado com sucesso. ID: 3, Nome: cachorro, Espécie: cachorro
+2024-08-24 18:57:15 - Consulta de todos os animais realizada com sucesso.
+2024-08-24 18:57:55 - Usuário saiu do sistema.
+2024-08-24 18:58:41 - Tentativa de cadastrar um animal sem zoológicos cadastrados.
+2024-08-24 18:58:49 - Tentativa de editar um animal sem zoológicos cadastrados.
+2024-08-24 19:03:49 - Tentativa de remover um animal sem zoológicos cadastrados.
