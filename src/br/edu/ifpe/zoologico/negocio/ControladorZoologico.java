@@ -2,10 +2,11 @@ package br.edu.ifpe.zoologico.negocio;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import br.edu.ifpe.zoologico.entidades.Zoologico;
 import br.edu.ifpe.zoologico.excecoes.ExcecaoNegocio;
 
-public class ControladorZoologico implements IControladorZoologico {
+public class ControladorZoologico extends ControladorGenerico<Zoologico> implements IControladorZoologico {
     private List<Zoologico> zoologicos = new ArrayList<>();
 
     @Override

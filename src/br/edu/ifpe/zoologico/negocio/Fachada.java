@@ -14,7 +14,7 @@ public class Fachada {
         controladorZoologico = FabricaControlador.getControladorZoologico();
     }
 
-   
+   //CRUD ANIMAL
     public void cadastrarAnimal(Animal animal) throws ExcecaoNegocio {
         controladorAnimal.inserir(animal);
     }
@@ -36,51 +36,33 @@ public class Fachada {
     }
 
     
-    public void adicionarZoologico(Zoologico zoologico) throws ExcecaoNegocio {
-        controladorZoologico.inserir(zoologico);
+    //CRD ZOOLOGICO
+    public Zoologico adicionarZoologico(Zoologico zoologico) throws ExcecaoNegocio {
+        controladorZoologico.inserir(zoologico); 
+        return zoologico; 
     }
 
+
     public void removerZoologico(int id) throws ExcecaoNegocio {
+        
+        Zoologico zoologico = controladorZoologico.consultarPorId(id);
+        
+        if (zoologico == null) {
+            
+            throw new ExcecaoNegocio("Zoológico não encontrado.");
+        }
+        
+        
         controladorZoologico.remover(id);
     }
+
 
     public Zoologico consultarZoologicoPorId(int id) throws ExcecaoNegocio {
         return controladorZoologico.consultarPorId(id);
     }
 
-    public List<Zoologico> listarTodosZoologicos() throws ExcecaoNegocio {
+    public List<Zoologico> consultarTodosZoologicos() throws ExcecaoNegocio {
         return controladorZoologico.consultarTodos();
     }
 
-    public void adicionarAnimalAoZoologico(int idZoologico, Animal animal) throws ExcecaoNegocio {
-        Zoologico zoologico = controladorZoologico.consultarPorId(idZoologico);
-        if (zoologico == null) {
-            throw new ExcecaoNegocio("Zoológico não encontrado.");
-        }
-        zoologico.adicionarAnimal(animal);
-      
-        controladorZoologico.inserir(zoologico);
-    }
-
-    public void removerAnimalDoZoologico(int idZoologico, int idAnimal) throws ExcecaoNegocio {
-        Zoologico zoologico = controladorZoologico.consultarPorId(idZoologico);
-        if (zoologico == null) {
-            throw new ExcecaoNegocio("Zoológico não encontrado.");
-        }
-        Animal animal = zoologico.encontrarAnimalPorId(idAnimal);
-        if (animal == null) {
-            throw new ExcecaoNegocio("Animal não encontrado no zoológico.");
-        }
-        zoologico.removerAnimal(animal);
-        
-        controladorZoologico.inserir(zoologico);
-    }
-
-    public Animal consultarAnimalNoZoologico(int idZoologico, int idAnimal) throws ExcecaoNegocio {
-        Zoologico zoologico = controladorZoologico.consultarPorId(idZoologico);
-        if (zoologico == null) {
-            throw new ExcecaoNegocio("Zoológico não encontrado.");
-        }
-        return zoologico.encontrarAnimalPorId(idAnimal);
-    }
 }

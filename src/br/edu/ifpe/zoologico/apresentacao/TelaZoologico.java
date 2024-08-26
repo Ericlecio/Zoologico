@@ -38,10 +38,10 @@ public class TelaZoologico {
             System.out.println("8. Consultar Animal específico");
             System.out.println("9. Consultar todos os animais");
             System.out.println("==============================================");
-            System.out.println("10. Sair do sistema");
+            System.out.println("0. Sair do sistema");
             System.out.println("=============================================");
 
-            opcao = lerInteiro("uma opção");
+            opcao = lerInteiro("opção");
 
             switch (opcao) {
                 case 1:
@@ -54,7 +54,7 @@ public class TelaZoologico {
                     consultarTodosZoologicos();
                     break;
                 case 4:
-                    removerZoologico();
+                	removerZoologicoPorID();
                     break;
                 case 5:
                     inserirAnimal();
@@ -71,7 +71,7 @@ public class TelaZoologico {
                 case 9:
                     consultarTodosAnimais();
                     break;
-                case 10:
+                case 0:
                     System.out.println("\nSaindo do sistema... Até mais!");
                     LogZoologico.registrarMovimentacao("Usuário saiu do sistema.");
                     break;
@@ -79,17 +79,16 @@ public class TelaZoologico {
                     System.out.println("\n[ERRO] Opção inválida! Digite um número entre 1 e 10.");
                     break;
             }
-        } while (opcao != 10);
+        } while (opcao != 9);
     }
 
-    
     //ANIMAL CRUD
     private void inserirAnimal() {
         System.out.println("Cadastro de Animal");
         
        
         try {
-            if (fachada.listarTodosZoologicos().isEmpty()) {
+            if (fachada.consultarTodosZoologicos().isEmpty()) {
                 System.out.println("Não há zoológicos cadastrados. Não é possível cadastrar um animal.");
                 LogZoologico.registrarMovimentacao("Tentativa de cadastrar um animal sem zoológicos cadastrados.");
                 return;
@@ -147,7 +146,7 @@ public class TelaZoologico {
     private void editarAnimal() {
     	
     	try {
-            if (fachada.listarTodosZoologicos().isEmpty()) {
+            if (fachada.consultarTodosZoologicos().isEmpty()) {
                 System.out.println("Não há zoológicos cadastrados. Não é possível editar um animal.");
                 LogZoologico.registrarMovimentacao("Tentativa de editar um animal sem zoológicos cadastrados.");
                 return;
@@ -202,7 +201,7 @@ public class TelaZoologico {
     private void removerAnimal() {
     	
     	try {
-            if (fachada.listarTodosZoologicos().isEmpty()) {
+            if (fachada.consultarTodosZoologicos().isEmpty()) {
                 System.out.println("Não há zoológicos cadastrados. Não é possível remover um animal.");
                 LogZoologico.registrarMovimentacao("Tentativa de remover um animal sem zoológicos cadastrados.");
                 return;
@@ -381,23 +380,24 @@ public class TelaZoologico {
 		}
 	}
 
-    
-    //ZOOLOGICO CRUD
+    //ZOOLOGICO CRD
     private void inserirZoologico() {
         System.out.println("Cadastro de Zoológico");
         String nome = lerString("nome do zoológico");
+        String endereco = lerString("endereço");
 
         try {
-            fachada.adicionarZoologico(new Zoologico(nome,nome));
-            System.out.println("Zoológico cadastrado com sucesso!");
-            LogZoologico.registrarMovimentacao("Zoológico cadastrado com sucesso: " + nome);
+            Zoologico zoologico = new Zoologico(nome, endereco); 
+            zoologico = fachada.adicionarZoologico(zoologico); 
+            System.out.println("Zoológico cadastrado com sucesso! ID: " + zoologico.getId()); 
+            LogZoologico.registrarMovimentacao("Zoológico cadastrado com sucesso: " + zoologico.getNome() + ", ID: " + zoologico.getId());
         } catch (ExcecaoNegocio e) {
             System.out.println("Erro ao cadastrar zoológico: " + e.getMessage());
             LogZoologico.registrarMovimentacao("Erro ao cadastrar zoológico: " + e.getMessage());
         }
     }
 
-    private void removerZoologico() {
+    private void removerZoologicoPorID() {
         System.out.println("Remoção de Zoológico");
         int id = lerInteiro("ID do zoológico");
 
@@ -410,7 +410,7 @@ public class TelaZoologico {
             LogZoologico.registrarMovimentacao("Erro ao remover zoológico com ID: " + id + " - " + e.getMessage());
         }
     }
-    
+
     private void consultarZoologicoID() {
         System.out.println("Consulta de Zoológico");
         int id = lerInteiro("ID do zoológico");
@@ -420,6 +420,7 @@ public class TelaZoologico {
             if (zoologico != null) {
                 System.out.println("ID: " + zoologico.getId());
                 System.out.println("Nome: " + zoologico.getNome());
+                System.out.println("Endereço: " + zoologico.getEndereco());
                 LogZoologico.registrarMovimentacao("Consulta de zoológico com sucesso. ID: " + id);
             } else {
                 System.out.println("Zoológico não encontrado.");
@@ -435,13 +436,14 @@ public class TelaZoologico {
         System.out.println("Lista de Todos os Zoológicos");
 
         try {
-            List<Zoologico> zoologicos = fachada.listarTodosZoologicos();
+            List<Zoologico> zoologicos = fachada.consultarTodosZoologicos();
             if (!zoologicos.isEmpty()) {
                 System.out.println("Lista de zoológicos:");
                 for (Zoologico zoologico : zoologicos) {
                     System.out.println("---------------------------------------------");
                     System.out.println("ID: " + zoologico.getId());
                     System.out.println("Nome: " + zoologico.getNome());
+                    System.out.println("Endereço: " + zoologico.getEndereco());
                 }
                 System.out.println("---------------------------------------------");
                 LogZoologico.registrarMovimentacao("Consulta de todos os zoológicos realizada com sucesso.");

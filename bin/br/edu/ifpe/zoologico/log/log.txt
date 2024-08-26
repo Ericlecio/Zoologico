@@ -208,3 +208,44 @@
 2024-08-24 18:58:41 - Tentativa de cadastrar um animal sem zoológicos cadastrados.
 2024-08-24 18:58:49 - Tentativa de editar um animal sem zoológicos cadastrados.
 2024-08-24 19:03:49 - Tentativa de remover um animal sem zoológicos cadastrados.
+2024-08-25 20:50:15 - Zoológico removido com sucesso. ID: 1
+2024-08-25 20:53:21 - Erro ao remover zoológico com ID: 1 - null
+2024-08-25 20:53:29 - Tentativa de remover um animal sem zoológicos cadastrados.
+2024-08-25 20:53:47 - Zoológico cadastrado com sucesso: zoologico flavio
+2024-08-25 20:53:55 - Erro ao remover zoológico com ID: 2 - null
+2024-08-25 20:54:20 - Consulta de todos os zoológicos realizada com sucesso.
+2024-08-25 20:54:31 - Zoológico removido com sucesso. ID: 1
+2024-08-25 20:54:36 - Nenhum zoológico cadastrado encontrado na consulta de todos os zoológicos.
+2024-08-25 21:00:12 - Tentativa de cadastrar um animal sem zoológicos cadastrados.
+2024-08-25 21:00:25 - Zoológico cadastrado com sucesso: zoologico, ID: 1
+2024-08-25 21:09:56 - Tentativa de cadastrar um animal sem zoológicos cadastrados.
+2024-08-25 21:10:14 - Zoológico cadastrado com sucesso: zoologico, ID: 1
+2024-08-25 21:10:21 - Nenhum zoológico cadastrado encontrado na consulta de todos os zoológicos.
+2024-08-25 21:10:43 - Erro ao consultar zoológico com ID: 2 - null
+2024-08-25 21:10:45 - Erro ao consultar zoológico com ID: 1 - null
+2024-08-25 21:11:14 - Zoológico cadastrado com sucesso: zoologico dois irmao, ID: 1
+2024-08-25 21:11:18 - Nenhum zoológico cadastrado encontrado na consulta de todos os zoológicos.
+2024-08-25 21:11:29 - Consulta de zoológico com sucesso. ID: 1
+2024-08-25 21:17:23 - Tentativa de cadastrar um animal sem zoológicos cadastrados.
+2024-08-25 21:17:33 - Zoológico cadastrado com sucesso: dois irmao, ID: 1
+2024-08-25 21:17:37 - Consulta de todos os zoológicos realizada com sucesso.
+2024-08-25 21:17:44 - Erro ao consultar zoológico com ID: 2 - null
+2024-08-25 21:17:47 - Erro ao consultar zoológico com ID: 1 - null
+2024-08-25 21:19:23 - Zoológico cadastrado com sucesso: dois irmao, ID: 1
+2024-08-25 21:19:29 - Consulta de todos os zoológicos realizada com sucesso.
+2024-08-25 21:19:34 - Consulta de zoológico com sucesso. ID: 1
+2024-08-25 21:21:34 - Tentativa de cadastrar um animal sem zoológicos cadastrados.
+2024-08-25 21:21:46 - Zoológico cadastrado com sucesso: dois irmao, ID: 1
+2024-08-25 21:22:08 - Zoológico cadastrado com sucesso: casa de flavio, ID: 2
+2024-08-25 21:22:16 - Consulta de todos os zoológicos realizada com sucesso.
+2024-08-25 21:22:31 - Erro ao consultar zoológico com ID: 3 - null
+2024-08-25 21:22:36 - Consulta de todos os zoológicos realizada com sucesso.
+2024-08-25 21:22:47 - Zoológico cadastrado com sucesso: gofada, ID: 3
+2024-08-25 21:22:58 - Consulta de todos os zoológicos realizada com sucesso.
+2024-08-25 21:23:08 - Zoológico cadastrado com sucesso: dasasd, ID: 4
+2024-08-25 21:23:13 - Consulta de todos os zoológicos realizada com sucesso.
+2024-08-25 21:23:27 - Consulta de zoológico com sucesso. ID: 2
+2024-08-25 21:23:48 - Finalização da adição de comportamentos.
+2024-08-25 21:23:48 - Animal cadastrado com sucesso. ID: 5, Nome: tom, Espécie: cachorro
+2024-08-25 21:24:14 - Consulta de todos os animais realizada com sucesso.
+2024-08-25 21:24:50 - Erro ao consultar animal com ID: 1 - null
